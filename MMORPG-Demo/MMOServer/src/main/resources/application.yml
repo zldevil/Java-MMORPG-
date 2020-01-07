@@ -1,0 +1,26 @@
+spring:
+  datasource:
+    url: jdbc:mysql://localhost:3306/gameserverdata?useUnicode=true&characterEncoding=utf-8&useSSL=true&serverTimezone=UTC
+    username: root
+    password: zhilun
+    type: com.alibaba.druid.pool.DruidDataSource
+    #spring.datasource.driver-class-name=com.mysql.jdbc.Driver
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+
+mybatis:
+  mapper-locations: classpath*:/mapper/*.xml
+  check-config-location: true
+  type-aliases-package: com.example.demoserver.game
+  configuration:
+    map-underscore-to-camel-case: true
+
+debug: true
+
+logging:
+  level:
+    com.example.demoserver.game: debug
+
+
+
+

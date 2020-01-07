@@ -1,0 +1,7 @@
+syntax = "proto3";
+option java_outer_classname = "MsgProto";
+option java_package="com.example.demoserver.common.proto";
+message Msg{
+  int32 mgsId = 1;
+  string content = 2;
+}

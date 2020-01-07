@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.example.demoserver.game.player.dao.UserEntityMapper">
+    <resultMap id="BaseResultMap" type="com.example.demoserver.game.player.model.UserEntity" >
+        <id column="Id" property="id" jdbcType="INTEGER" />
+        <result column="name" property="name" jdbcType="VARCHAR" />
+        <result column="state" property="state" jdbcType="INTEGER" />
+        <result column="senceId" property="sceneId" jdbcType="INTEGER" />
+        <result column="userId" property="userId" jdbcType="INTEGER" />
+        <result column="typeId" property="typeId" javaType="INTEGER"/>
+    </resultMap>
+
+    <select id="selectUserEntityById" resultMap="BaseResultMap">
+        select * from userentity where id=#{id}
+    </select>
+
+    <select id="selectPlayerByName" resultMap="BaseResultMap">
+        select * from userentity where name=#{name}
+    </select>
+
+    <select id="selectUserEntityByUserID" resultMap="BaseResultMap">
+        select * from userentity where userId=#{userId}
+    </select>
+
+    <insert id="insertUserEntity">
+        insert into userentity(Id,name,userId,typeId,sceneId,state)
+        values(
+        #{Id},#{name},#{userId},#{typeId},#{senceId},#{state}
+        )
+    </insert>
+
+</mapper>
