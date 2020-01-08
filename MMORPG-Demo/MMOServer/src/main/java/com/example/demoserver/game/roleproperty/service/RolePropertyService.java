@@ -1,15 +1,18 @@
 package com.example.demoserver.game.roleproperty.service;
 
 import com.example.demoserver.game.bag.model.ItemInfo;
+import com.example.demoserver.game.bag.model.ItemProperty;
 import com.example.demoserver.game.player.model.Player;
 import com.example.demoserver.game.player.service.PlayerDataService;
 import com.example.demoserver.game.roleproperty.dao.RolePropertyCache;
 import com.example.demoserver.game.roleproperty.model.RoleProperty;
+import com.example.demoserver.server.net.utils.SplitParameters;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -34,19 +37,57 @@ public class RolePropertyService {
      */
     public boolean loadThingPropertyToPlayer(Player player, ItemInfo itemInfo) {
 
-        Map<Integer,RoleProperty> itemPropertyMap = itemInfo.getItemRoleProperty();
+
+        List<ItemProperty> itemPropertyList= SplitParameters.split(itemInfo);
+
         Map<Integer,RoleProperty> playerPropertyMap = player.getRolePropertyMap();
 
-        itemPropertyMap.values().forEach(
-                itemInfoProperty -> {
+        itemPropertyList.forEach(itemProperty -> {
 
-                }
-        );
+            Integer idTmp=itemProperty.getId();
+
+            Long valueOfItem=itemProperty.getValue();
+
+            Long valueResult =playerPropertyMap.get(idTmp).getPropertyValue()+valueOfItem;
+
+            playerPropertyMap.get(idTmp).setPropertyValue(valueResult);
+
+        });
+
+        player.setRolePropertyMap(playerPropertyMap);
 
         // 计算战力
        // playerDataService.computeAttack(player);
         return true;
     }
+
+
+    public boolean removeThingPropertyForPlayer(Player player, ItemInfo itemInfo) {
+
+        List<ItemProperty> itemPropertyList= SplitParameters.split(itemInfo);
+
+        Map<Integer,RoleProperty> playerPropertyMap = player.getRolePropertyMap();
+
+        itemPropertyList.forEach(itemProperty -> {
+
+            Integer idTmp=itemProperty.getId();
+
+            Long valueOfItem=itemProperty.getValue();
+
+            Long valueResult =playerPropertyMap.get(idTmp).getPropertyValue()-valueOfItem;
+
+            playerPropertyMap.get(idTmp).setPropertyValue(valueResult);
+
+        });
+
+        player.setRolePropertyMap(playerPropertyMap);
+
+        // 计算战力
+        //playerDataService.computeAttack(player);
+
+        return true;
+    }
+
 
 
 

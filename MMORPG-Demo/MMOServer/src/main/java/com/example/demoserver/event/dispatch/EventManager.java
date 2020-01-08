@@ -16,7 +16,14 @@ public class EventManager {
 
     private static Map<Class<? extends GameEvent>, List<EventHandler>> listenerMap = new ConcurrentHashMap<>();
 
-    public static <E extends GameEvent> void subscribe(Class<? extends GameEvent> eventClass, EventHandler<E> eventHandler) {
+
+    /**
+     *
+     * @param eventClass
+     * @param eventHandler
+     * @param <E>
+     */
+    public static <E extends GameEvent> void registe(Class<? extends GameEvent> eventClass, EventHandler<E> eventHandler) {
 
         List<EventHandler> eventHandlerList = listenerMap.get(eventClass);
         if (null == eventHandlerList) {
@@ -29,13 +36,9 @@ public class EventManager {
     }
 
 
+    private static ThreadFactory sceneThreadFactory = new ThreadFactoryBuilder().setNameFormat("event-loop-%d").build();
 
-
-    private static ThreadFactory sceneThreadFactory = new ThreadFactoryBuilder()
-            .setNameFormat("event-loop-%d").build();
     private static ExecutorService singleThreadSchedule = Executors.newSingleThreadScheduledExecutor(sceneThreadFactory);
-
-
 
 
     public static <E extends GameEvent> void publish(E event) {
@@ -51,5 +54,13 @@ public class EventManager {
     public static void close() throws Exception {
         //释放资源
         listenerMap.clear();
+    }
+
+    public static EventManager getInstance() {
+
+        EventManager eventManager = new EventManager();
+
+        return eventManager;
+
     }
 }

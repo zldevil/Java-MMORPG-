@@ -25,11 +25,6 @@ import java.util.stream.Collectors;
 public class SkillController {
 
 
-    @Resource
-    private PlayerDataService playerDataService;
-
-    @Resource
-    private GameSceneService gameSceneService;
 
     @Resource
     private Notify notify;
@@ -43,8 +38,6 @@ public class SkillController {
 
         String[] command = SplitParameters.split(message);
         Integer skillId = Integer.valueOf(command[1]);
-
-        //Long targetId = Long.valueOf(command[2]);
 
         List<Integer> targetIdList = Arrays.stream(Arrays.copyOfRange(command,2,command.length))
                 .map(Integer::valueOf).collect(Collectors.toList());

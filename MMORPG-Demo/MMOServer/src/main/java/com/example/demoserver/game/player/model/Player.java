@@ -52,24 +52,29 @@ public class Player extends UserEntity implements Character {
 
     private Integer level;
 
-    //玩家拥有的Buff
+    /**
+     * 玩家现在拥有的buff
+     */
     List<Buff> buffList=new ArrayList<>();
 
     //构建背包
     Bag bag=new Bag(this.getId(),16);
 
     //装备栏
-    private Map<Integer, Item> equipmentBar = new ConcurrentHashMap<>();
+    private Map<String, Item> equipmentBar = new ConcurrentHashMap<>();
 
     // 玩家当前所处场景。
     private GameScene currentScene;
 
+    /**
+     * 使用过的技能
+     */
     private Map<Integer , Skill> skillMap =new ConcurrentHashMap<>();
 
 
-
-
-    //角色属性
+    /**
+     * 角色属性，key为每一个属性的id，value为属性对象
+     */
     private Map<Integer, RoleProperty> rolePropertyMap = new ConcurrentHashMap<>();
 
 

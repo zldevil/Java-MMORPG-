@@ -2,6 +2,7 @@ package com.example.demoserver.game.ScenceEntity.service;
 
 import com.example.demoserver.common.commons.Character;
 import com.example.demoserver.event.dispatch.EventManager;
+import com.example.demoserver.event.events.MonsterDeadEvent;
 import com.example.demoserver.game.ScenceEntity.model.Monster;
 import com.example.demoserver.game.player.model.Player;
 import com.example.demoserver.game.player.service.PlayerDataService;
@@ -25,7 +26,6 @@ public class MonsterService {
     @Resource
     private SkillService skillService;
 
-
     @Resource
     private GameObjectService gameObjectService;
 
@@ -35,14 +35,16 @@ public class MonsterService {
     @Resource
     private PlayerDataService playerDataService;
 
-
-    public void monsterBeAttack(Character character, Monster monster, GameScene gameScene, Long damage) {
+    /**
+     * @param character
+     * @param monster
+     */
+    public void monsterBeAttack(Character character, Monster monster) {
 
         // 将怪物当前目标设置为玩家,让怪物攻击玩家
         if (Objects.isNull(monster.getTargetCharacter())) {
             monster.setTargetCharacter(character);
         }
-
 
         Player player = null;
         if (character instanceof Player) {
@@ -54,15 +56,14 @@ public class MonsterService {
             player =  (Player) pet.getMaster();
         }
 */
-        /*if (Objects.nonNull(player)) {
-            // 怪物被攻击的事件
-            EventManager.publish(new AttackMonsterEvent(player,monster,gameScene,damage));
+        if (Objects.nonNull(player)) {
             // 如果怪物死亡
             if (gameObjectService.sceneObjectAfterDead(monster)) {
                 // 结算掉落，这里暂时直接放到背包里
-                monsterDropsService.dropItem(player,monster);
+                monsterDropsService.dropItem(player, monster);
                 // 怪物死亡的事件
-                EventManager.publish(new MonsterEventDeadEvent(player,monster,gameScene,damage));
-            }*/
+                EventManager.publish(new MonsterDeadEvent(player, monster));
+            }
+        }
     }
 }

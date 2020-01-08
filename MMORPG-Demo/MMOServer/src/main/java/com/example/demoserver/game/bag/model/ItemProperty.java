@@ -7,5 +7,7 @@ public class ItemProperty {
 
     private Integer id;
 
-    private  Integer value;
+    //装备增加的属性值
+    private  Long value;
+
 }

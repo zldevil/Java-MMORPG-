@@ -36,7 +36,6 @@ public class EquipmentController {
     private BagService bagsService;
 
 
-
     @RequestMapping(getOrder = Orders.WEAREQUIP)
     private void wearEquip(ChannelHandlerContext ctx, Msg message) {
         String[] command = SplitParameters.split(message);
@@ -54,9 +53,6 @@ public class EquipmentController {
         }
     }
 
-
-
-
     @RequestMapping(getOrder = Orders.SHOW_EQUIPMENT_BAR)
     private void showEquip(ChannelHandlerContext ctx, Msg message) {
         Player player = playerDataService.getPlayerByCtx(ctx);
@@ -66,7 +62,7 @@ public class EquipmentController {
             return;
         }
 
-        Map<Integer, Item> equipmentBar = player.getEquipmentBar();
+        Map<String, Item> equipmentBar = player.getEquipmentBar();
         StringBuilder sb = new StringBuilder();
         equipmentBar.values().stream().
                 map(Item::getItemInfo).
@@ -96,15 +92,13 @@ public class EquipmentController {
 
     @RequestMapping(getOrder = Orders.REMOVE_EQUIP)
     private void removeEquip(ChannelHandlerContext ctx, Msg message) {
-
         String[] params= SplitParameters.split(message);
         // 需要卸下装备的部位
         String part = params[1];
 
         Player player = playerDataService.getPlayerByCtx(ctx);
-        Msg msg = equipmentBarService.removeEquip(player, part);
+        equipmentBarService.removeEquip(player, part);
 
-        Notify.notifyByCtx(ctx, msg.toProto());
 
     }
 }

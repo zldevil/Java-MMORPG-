@@ -1,7 +1,8 @@
 package com.example.demoserver.game.bag.service;
 
-import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.*;
 import com.example.demoserver.common.commons.Constant;
+import com.example.demoserver.game.bag.dao.BagMapper;
 import com.example.demoserver.game.bag.dao.ItemInfoCache;
 import com.example.demoserver.game.bag.model.Bag;
 import com.example.demoserver.game.bag.model.Item;
@@ -13,13 +14,15 @@ import com.example.demoserver.game.player.manager.PlayerCacheMgr;
 import com.example.demoserver.game.player.model.Player;
 import com.example.demoserver.game.roleproperty.service.RolePropertyService;
 import com.example.demoserver.server.notify.Notify;
+import com.google.common.base.Strings;
+import com.sun.xml.internal.bind.v2.TODO;
 import io.netty.channel.ChannelHandlerContext;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import javax.annotation.Resource;
+
 import java.text.MessageFormat;
 import java.util.*;
 
@@ -45,6 +48,9 @@ public class BagService {
 
     @Autowired
     private  Notify notify;
+
+    @Autowired
+    private BagMapper bagMapper;
 
 
     public void packBag(ChannelHandlerContext ctx){
@@ -139,7 +145,7 @@ public class BagService {
      */
     public boolean removeItem(Player player, Long itemId, Integer count) {
         Bag bag = player.getBag();
-        Map<Integer, Item> itemMap = bag.getItemMap();
+        Map<Long, Item> itemMap = bag.getItemMap();
         if(!itemMap.isEmpty()) {
             Item item = bag.getItemMap().get(itemId);
 
@@ -166,21 +172,44 @@ public class BagService {
     /**
      *  从背包中寻找空位置放进去
      * @param player 玩家
-     * @param item 物品条目
+     * @param item 物品
      * @return 物品是否放入背包成功
      */
 
     public boolean addItem(Player player, Item item) {
+
         Bag bag = player.getBag();
         if (item == null) {
             return false;
         }
-        Map<Integer,Item> itemMap = bag.getItemMap();
+
+        Boolean flag=true;
+
+        Map<Long, Item> itemMap = bag.getItemMap();
 
         // 种类为2的物品为可堆叠的
+
         if (item.getItemInfo().getType().equals(ItemType.CONSUMABLE_ITEM.getType())) {
 
-            for (int locationIndex=1; locationIndex <= bag.getBagSize(); locationIndex++) {
+
+            if (itemMap.size() >= Constant.packageSize) {
+                if (itemMap.get(item.getId()) == null) {
+                    notify.notifyPlayer(player, "背包满，物品无法放进背包");
+                    flag=false;
+                } else {
+                    itemMap.put(item.getId(), item);
+                }
+            } else {
+                if (itemMap.get(item.getId()) == null) {
+                    itemMap.put(item.getId(), item);
+                } else {
+                    Optional.ofNullable(itemMap.get(item.getId())).ifPresent(itemTmp -> {
+                        itemTmp.setCount(itemTmp.getCount() + 1);
+                    });
+                }
+
+            }
+            /*for (int locationIndex=1; locationIndex <= bag.getBagSize(); locationIndex++) {
 
                 //位置和ID相同不行吗
                 Item itemTmp = itemMap.get(locationIndex);
@@ -191,12 +220,12 @@ public class BagService {
                             MessageFormat.format("物品{0} x {1}  放入了你的背包\n",
                                     item.getItemInfo().getName(),item.getCount()));
                     return true;
-                }
-            }
-        }
+                }*/
+        /*    }
+        }*/
 
-        // 遍历背包所有格子，如果是空格，将物品放入格子
-        for (int locationIndex=1; locationIndex <= bag.getBagSize(); locationIndex++) {
+            // 遍历背包所有格子，如果是空格，将物品放入格子
+      /*  for (int locationIndex=1; locationIndex <= bag.getBagSize(); locationIndex++) {
             item.setLocationIndex(locationIndex);
             if (null == bag.getItemMap().putIfAbsent(locationIndex,item)) {
                 notify.notifyPlayer(player,
@@ -205,25 +234,31 @@ public class BagService {
                 return true;
             }
         }
-        return false;
+        return false;*/
+
+        } else {
+            if (itemMap.size() < Constant.packageSize) {
+                itemMap.put(item.getId(), item);
+            } else {
+                notify.notifyPlayer(player, "背包已满，无法放入装备");
+                flag=false;
+            }
+        }
+        return flag;
     }
 
 
-
-
-    /**
-     * 创建物品条目
-     */
-/*    public Item createItemByItemInfo(Integer thingId, Integer number) {
-        ItemInfo thingInfo = getThingInfo(thingId);
+        /**
+         * 创建物品条目
+         */
+    public Item createItemByItemInfo(Integer itemId, Integer number) {
+        ItemInfo thingInfo = getItemInfo(itemId);
 
         if (Objects.isNull(thingInfo)) {
             return null;
         }
         return new Item(generateItemId(),number,thingInfo);
-    }*/
-
-
+    }
 
 
     /**
@@ -231,12 +266,76 @@ public class BagService {
      */
     public Long generateItemId() {
 
-        Long s=null;
-        return s;
-        // 使用推特的雪花算法
-       /* SnowFlake snowFlake = new SnowFlake(1, 1);
-        return snowFlake.nextId();*/
+        Long resulId=System.currentTimeMillis();
+        Random random=new Random();
+
+        StringBuilder stringBuilder=new StringBuilder();
+
+        stringBuilder.append(resulId);
+        stringBuilder.append(random.nextInt(10));
+
+        return Long.valueOf(String.valueOf(stringBuilder));
+
+
     }
+
+    /**
+     *   从数据库加载背包
+     */
+
+    public void loadBag(Player player) {
+
+
+        List<Bag> bagList = bagMapper.selectBagByPlayerId(player.getId());
+
+        bagList.forEach( tBag ->  {
+
+                Bag bag = new Bag(tBag.getPlayerId(),tBag.getBagSize());
+
+                if (!Strings.isNullOrEmpty(tBag.getItems())) {
+                    Map<Long,Item> itemMap =  JSON.parseObject(tBag.getItems(),
+                            new TypeReference<Map<Long,Item>>(){});
+                    bag.setItemMap(itemMap);
+                } else {
+                    bag.setItemMap(new LinkedHashMap<>());
+                }
+
+                bag.setBagName(tBag.getBagName());
+                player.setBag(bag);
+
+                log.debug("bag {} ", bag );
+
+        });
+    }
+
+
+    /**
+     *  持久化背包数据
+     */
+    public void saveBag(Player player){
+
+        Bag saveBag=new Bag();
+        Bag bag = player.getBag();
+        saveBag.setPlayerId(player.getId());
+
+        saveBag.setBagName(bag.getBagName());
+        saveBag.setBagSize(bag.getBagSize());
+        saveBag.setItems(JSON.toJSONString(bag.getItemMap()));
+
+        if (bagMapper.updateByPrimaryKeySelective(saveBag) > 0) {
+            log.debug("更新背包成功 {}",saveBag);
+
+
+            TODO 将语句写好;
+
+        } else {
+            bagMapper.insertBag(saveBag);
+            log.debug("保存背包成功 {}",saveBag);
+        }
+    }
+
+
+
 
 
 }

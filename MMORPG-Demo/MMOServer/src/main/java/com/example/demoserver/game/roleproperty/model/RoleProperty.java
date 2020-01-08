@@ -8,7 +8,7 @@ public class RoleProperty {
 
     private Long propertyValue;
 
-    //？？？
+
     private  Integer type;
 
 

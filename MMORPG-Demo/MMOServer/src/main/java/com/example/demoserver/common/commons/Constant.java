@@ -72,4 +72,9 @@ public interface Constant {
     Integer NEW_PLAYER_TASK_ID = 3;
     Integer EXPITEM_BUFF = 1000;
     Integer EXP_ITEMINFO = 2000;
+
+    Integer packageSize=16;
+    Long MAXMP=600L;
+    Long MAXHP=600L;
+
 }

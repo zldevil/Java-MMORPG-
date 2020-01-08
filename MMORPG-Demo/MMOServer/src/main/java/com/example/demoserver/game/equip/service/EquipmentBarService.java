@@ -9,6 +9,7 @@ import com.example.demoserver.game.bag.model.ItemType;
 import com.example.demoserver.game.bag.service.BagService;
 import com.example.demoserver.game.player.model.Player;
 import com.example.demoserver.game.roleproperty.service.RolePropertyService;
+import com.example.demoserver.server.notify.Notify;
 import com.google.common.base.Strings;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +28,9 @@ public class EquipmentBarService {
     @Autowired
     private RolePropertyService rolePropertyService;
 
+    @Autowired
+    private  Notify notify;
+
 
     /**
      * 穿上装备
@@ -38,7 +42,7 @@ public class EquipmentBarService {
 
     public boolean wearEquip(Player player, Integer itemId) {
 
-        Map<Integer, Item> equipmentBar = player.getEquipmentBar();
+        Map<String, Item> equipmentBar = player.getEquipmentBar();
 
         Item item = player.getBag().getItemMap().get(itemId);
         if (null == item) {
@@ -63,7 +67,7 @@ public class EquipmentBarService {
         rolePropertyService.loadThingPropertyToPlayer(player, itemInfo);
 
         // 穿上装备
-        player.getEquipmentBar().put(itemInfo.getLocation(), item);
+        player.getEquipmentBar().put(itemInfo.getDescribe(), item);
 
         // 从背包移除物品
         //bagsService.removeItem(player,itemId);
@@ -82,23 +86,27 @@ public class EquipmentBarService {
      * @param part 需要卸下装备的部位
      * @return 是否卸下装备
      */
-  /*  public Msg removeEquip(Player player, String part)  {
+
+    public void removeEquip(Player player, String part)  {
+
         Map<String,Item> equipmentBar = player.getEquipmentBar();
+
         Item item = equipmentBar.get(part);
+
         if (item == null) {
-            return new Msg(404,"你身上没有穿戴这件装备");
+           notify.notifyPlayer(player,"此装备未穿戴");
         }
+
         // 移除属性增益,放入背包
         if ( equipmentBar.remove(part,item)
                 &&bagsService.addItem(player,item)
-                && rolePropertyService.removeThingPropertyForPlayer(player,item.getThingInfo())) {
-            return new Msg(200,"卸下装备成功");
+                && rolePropertyService.removeThingPropertyForPlayer(player,item.getItemInfo())) {
+            notify.notifyPlayer(player,"卸载装备成功，并放回背包");
         } else {
-            return new Msg(401,"背包已满");
+            notify.notifyPlayer(player,"卸载装备失败，背包已满");
         }
 
-    }*/
-
+    }
 
     /**
      * 加载装备
@@ -113,7 +121,6 @@ public class EquipmentBarService {
             log.debug("  equipmentBar{}", equipmentBar);
             // 很重要，将从数据库还原的装备加载到角色
 
-            //装备栏的key到底是什么
              player.setEquipmentBar(equipmentBar);
 
             equipmentBar.values()

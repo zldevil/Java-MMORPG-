@@ -53,4 +53,11 @@ public class Skill {
     private  Integer type;
     private Integer buff;
 
+    private Float skillDamagePercent;
+
+    private Long useSkillTime;
+
+    /**
+     * 技能等级，技能施放时间。。。
+     */
 }

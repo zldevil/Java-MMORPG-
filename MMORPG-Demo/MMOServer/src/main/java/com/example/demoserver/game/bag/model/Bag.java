@@ -1,5 +1,7 @@
 package com.example.demoserver.game.bag.model;
 
+import com.alibaba.fastjson.*;
+
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 
@@ -17,22 +19,32 @@ public class Bag  {
 
     private Integer bagSize;
 
-    //啥意思？，背包类型是是啥意思
-    private Integer type;
+    private String items;
 
 
-    //时间复杂度为O（1），每次取到物品
-    Map<Integer,Item> itemMap = new ConcurrentSkipListMap<>();
+    JSONObject json = JSONObject.parseObject(items);
+
+    Map<Long,Item> itemMap =new ConcurrentSkipListMap<>();
 
 
-    public Bag(Integer playerId, String bagName, Integer bagSize, Integer type) {
+    /**
+     *
+     * @param playerId
+     * @param bagName
+     * @param bagSize
+     */
+    public Bag(Integer playerId, String bagName, Integer bagSize) {
         this.playerId = playerId;
         this.bagName = bagName;
         this.bagSize = bagSize;
-        this.type = type;
 
     }
 
+    /**
+     *
+     * @param playerId
+     * @param bagSize
+     */
     public Bag(Integer playerId, Integer bagSize) {
         this.playerId = playerId;
         this.bagSize = bagSize;

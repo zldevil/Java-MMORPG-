@@ -3,7 +3,7 @@ package com.example.demoserver.manager;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-//当时想个线程池管理
+//想个线程池管理
 
 public class ExecutorPool {
 

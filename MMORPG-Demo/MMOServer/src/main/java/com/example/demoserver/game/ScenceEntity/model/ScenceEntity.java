@@ -94,22 +94,11 @@ public class ScenceEntity {
 
 
 
-    /*public void setDeadTime(long deadTime) {
-        this.deadTime = deadTime;
-    }
 
-    public Characters getTarget() {
-        return target;
-    }
-
-    public void setTarget(Characters target) {
-        this.target = target;
-    }*/
+    //设置死亡时间，怪物被杀死后定时重生
+    private long deadTime;
 
 
-
-    // 死亡时间
-   // private long deadTime;
 
     /**
      * // 当前使用技能的集合

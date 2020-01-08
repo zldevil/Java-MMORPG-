@@ -1,7 +1,6 @@
 package com.example.demoserver.game.buff.model;
 
 
-import com.example.demoserver.common.commons.Character;
 
 public class Buff {
 
@@ -20,31 +19,21 @@ public class Buff {
     //持续时间
     private Integer duration;
 
-    //时间间隔指的是什么？？？？
+
     private Integer intervalTime;
 
-    //作用于玩家角色
-    //private Character character;
+    private Long useBuffTime;
 
 
 
-
-   /* public Character getCharacter() {
-        return character;
+    public Long getUseBuffTime() {
+        return useBuffTime;
     }
 
-    public void setCharacter(Character character) {
-        this.character = character;
-    }*/
-
-  /*  public Long getStartTime() {
-        return startTime;
+    public void setUseBuffTime(Long useBuffTime) {
+        this.useBuffTime = useBuffTime;
     }
 
-    public void setStartTime(Long startTime) {
-        this.startTime = startTime;
-    }
-*/
     public Integer getId() {
         return id;
     }

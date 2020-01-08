@@ -43,6 +43,7 @@ public class SkillEffect {
      * @param gameScene 场景
      * @param skill 技能
      */
+
    /* public void castSkill(Integer skillTypeId,
                           Character initiator,
                           Character target,

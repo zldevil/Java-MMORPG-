@@ -39,7 +39,8 @@ public class BuffService {
         BeanUtils.copyProperties(buff,playerBuffer);
 
         // 记录开始时间
-        //playerBuffer.setStartTime(System.currentTimeMillis());
+        playerBuffer.setUseBuffTime(System.currentTimeMillis());
+
         character.getBufferList().add(playerBuffer);
 
         // 如果是buffer有不良效果
@@ -64,7 +65,7 @@ public class BuffService {
                                         "你身上的buffer {0}  对你造成影响, hp:{1} ,mp:{2} \n",
                                         buff.getName(),buff.getHpRecover(),buff.getMpRecover()
                                 ));
-                                // 检测玩家是否死亡，检测什么玩家是否死亡啊
+                                // 检测玩家是否死亡
                                // playerDataService.isPlayerDead((Player) character,null);
                             }
 
@@ -90,7 +91,7 @@ public class BuffService {
                                         "你身上的buffer {0}  对你造成影响, hp:{1} ,mp:{2} \n",
                                         buff.getName(),buff.getHpRecover(),buff.getMpRecover()
                                 ));
-                                // 检测玩家是否死亡，检测什么玩家是否死亡啊
+                                // 检测玩家是否死亡
                                 // playerDataService.isPlayerDead((Player) character,null);
                             }
 

@@ -24,7 +24,6 @@ import java.util.Optional;
 public class BagController  {
 
 
-
     @Autowired
     private BagService bagService;
 
@@ -37,6 +36,7 @@ public class BagController  {
 
     
     @RequestMapping(getOrder = Orders.PACKBAG)
+
     public void packBag(ChannelHandlerContext ctx, Msg message) {
         bagService.packBag(ctx);
     }
@@ -49,7 +49,6 @@ public class BagController  {
             Notify.notifyByCtx(ctx,"角色没登陆");
             return;
         }
-
 
         Map<Integer, Item> itemMap = bagService.show(player);
         log.debug("itemMap {}",itemMap);

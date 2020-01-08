@@ -28,8 +28,6 @@ public class GameObjectService {
     @Resource
     private GameObjectManager gameObjectManager;
 
-   /* @Resource
-    private NotificationManager notificationManager;*/
 
     @Resource
     private PlayerDataService playerDataService;
@@ -48,23 +46,24 @@ public class GameObjectService {
 
     /**
      *  场景对象死亡后处理
-     * @param sceneObject 场景对象死亡后处理
+     * @param monster 场景对象死亡后处理
      * @return
      */
-    /**public boolean sceneObjectAfterDead(SceneObject sceneObject) {
-        if (sceneObject.getHp() <= 0) {
+    public boolean sceneObjectAfterDead(Monster monster) {
+        if (monster.getHp() <= 0) {
             // 重要，设置死亡时间
-            sceneObject.setDeadTime(System.currentTimeMillis());
-            sceneObject.setHp(0L);
-            sceneObject.setState(-1);
+            monster.setDeadTime(System.currentTimeMillis());
+            monster.setHp(0L);
+            monster.setState(-1);
             // 重要，清空对象当前目标
-            sceneObject.setTarget(null);
+            monster.setTarget(null);
             return true;
         } else{
             return false;
         }
     }
-*/
+
+
     /**
      *      获得场景配置的场景对象
      */
@@ -79,8 +78,9 @@ public class GameObjectService {
                 .map( this::getGameObject)
                 .forEach( scenceEntity -> {
                     if ( scenceEntity.getRoleType().equals(SceneObjectType.NPC.getType())) {
+
                         NPC npc = new NPC();
-                        //通过工具类复制对象
+
                        BeanUtils.copyProperties(scenceEntity,npc);
                         gameScene.getNpcs().put(scenceEntity.getId(), npc);
                     }
@@ -93,6 +93,7 @@ public class GameObjectService {
         );
         return gameScene;
     }
+
 
 
     public void talkWithNpc(Integer id_NPC,ChannelHandlerContext ctx){

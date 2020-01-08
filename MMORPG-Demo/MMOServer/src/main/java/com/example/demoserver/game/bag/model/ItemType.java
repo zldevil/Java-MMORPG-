@@ -7,9 +7,7 @@ public enum ItemType {
     //装备
     EQUIT_ITEM(1),
     //可叠加消耗品
-    CONSUMABLE_ITEM(2),
-    //消耗品
-    CAN_BE_STACKED(3);
+    CONSUMABLE_ITEM(2);
 
     private Integer type;
 

@@ -6,17 +6,16 @@ import lombok.Data;
 @Data
 public class Item {
 
-    //应该就是指物品，
+
+    //生成算法生成
     private long id;
     //代表数量，所以叠加
     private Integer count; // 武器不能叠加
 
-
     private ItemInfo itemInfo;
 
-    //在背包中的位置，默认为0
+    //在背包中的位置索引，默认为0
     private Integer locationIndex = 0;
-
 
     /**武器耐久度 默认是-1*/
     private Long durable = -1L;
