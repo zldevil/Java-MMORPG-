@@ -79,6 +79,13 @@ public class SkillService {
             return ;
         }
 
+        //不只是武器拥有耐久度，在使用技能时所有装备均消耗耐久度
+        player.getEquipmentBar().values().forEach(item -> {
+            if(item.getDurable()-3<0){
+                notify.notifyPlayer(player,MessageFormat.format("{0}的耐久度不足",item.getItemInfo().getName()));
+            }
+        });
+
         if (!skill.getType().equals(SkillType.ATTACK_MULTI.getTypeId())) {
             notify.notifyPlayer(player,"该技能不能对多个目标使用");
 

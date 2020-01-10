@@ -67,13 +67,11 @@ public class GameSceneService {
      * @param player 玩家
      * @return 相邻的场景
      */
-
     private List<GameScene> getNeighborsSceneByPlayer(Player player) {
         GameScene gameScene = getSceneByPlayer(player);
         //string类型
         return getNeighborsSceneByIds(gameScene.getNeighborScence());
     }
-
 
     /**
      *      通过上下文查找场景
@@ -107,10 +105,6 @@ public class GameSceneService {
         notify.playerEnter(player,targetScene);
     }
 
-
-
-
-
     /**
      *  进入场景初始化
      * @param player 玩家
@@ -132,7 +126,6 @@ public class GameSceneService {
         notify.playerEnter(player,scene);
 
     }
-
 
     /**
      *  是否能移动到一个场景

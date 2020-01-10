@@ -17,7 +17,7 @@ import java.util.Map;
 
 @Service
 @Slf4j
-//场景实体的缓存，场景实体的缓存
+
 public class GameObjectManager  {
 
 
@@ -27,13 +27,8 @@ public class GameObjectManager  {
             ).build();
 
 
-
-
     @PostConstruct
     public void init() throws Exception {
-
-
-        //就是想得到所有的SceneOEntity，将excel中的属性导入到实体中，将实体形成一个集合就完了
 
         List<ScenceEntity> scenceEntityList = ExcelUtil.readExcel("static/SceneEntity.xlsx",new ScenceEntity());
 
@@ -45,17 +40,13 @@ public class GameObjectManager  {
     }
 
 
-
     public ScenceEntity get(Integer gameObjectId) {
         return gameEntityCache.getIfPresent(gameObjectId);
     }
 
-
     public void put(Integer gameObjectId, ScenceEntity value) {
         gameEntityCache.put(gameObjectId,value);
     }
-
-
 
     public Map<Integer,ScenceEntity> list() {
         return gameEntityCache.asMap();

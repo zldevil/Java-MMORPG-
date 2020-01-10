@@ -33,7 +33,8 @@ public class BuffService {
     private PlayerDataService playerDataService;
 
 
-    public boolean startBuffer(Character character, Buff buff) throws Exception {
+    public void startBuffer(Character character, Buff buff) throws Exception {
+
         Buff playerBuffer = new Buff();
 
         BeanUtils.copyProperties(buff,playerBuffer);
@@ -65,7 +66,8 @@ public class BuffService {
                                         "你身上的buffer {0}  对你造成影响, hp:{1} ,mp:{2} \n",
                                         buff.getName(),buff.getHpRecover(),buff.getMpRecover()
                                 ));
-                                // 检测玩家是否死亡
+
+                                // 检测玩家是否死亡，
                                // playerDataService.isPlayerDead((Player) character,null);
                             }
 
@@ -104,11 +106,9 @@ public class BuffService {
                 });
             }
 
-
             /**
-             *
+             * buffer cd 处理
              */
-            // buffer cd 处理
             TimeTaskThreadManager.threadPoolSchedule(buff.getDuration(),
                     () -> {
 
@@ -117,7 +117,6 @@ public class BuffService {
 
                         // 恢复正常状态
                         character.setState(1);
-
 
                         // 如果是玩家，进行通知
                         if (character instanceof Player) {
@@ -140,12 +139,38 @@ public class BuffService {
                 notify.notifyPlayer((Player) character, MessageFormat.format(
                         "你身上的buffer {0}  对你造成影响, hp:{1} ,mp:{2} \n",
                         buff.getName(),buff.getHpRecover(),buff.getMpRecover()));
-
            }
 
+            /**
+             * buffer cd 处理
+             */
+            TimeTaskThreadManager.threadPoolSchedule(buff.getDuration(),
+                    () -> {
+
+                        // 过期移除buffer
+                        character.getBufferList().remove(buff);
+
+                        // 恢复正常状态
+                        character.setState(1);
+
+                        // 如果是玩家，进行通知
+                        if (character instanceof Player) {
+                            notify.notifyPlayer((Player) character,MessageFormat.format(
+                                    "你身上的buffer {0}  结束\n",buff.getName()
+                            ));
+                            // 检测玩家是否死亡
+                            //playerDataService.isPlayerDead((Player) character,null);
+                        }
+                        log.debug(" buffer过期清除定时器 {}", new Date());
+                        return null;
+                    });
+
+
     }
-            return true;
+
     }
+
+
 
     public Buff getBuff(int BuffId) {
         return buffCache.get(BuffId);

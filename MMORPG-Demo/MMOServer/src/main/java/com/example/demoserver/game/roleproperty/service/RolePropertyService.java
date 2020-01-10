@@ -1,5 +1,8 @@
 package com.example.demoserver.game.roleproperty.service;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
+import com.alibaba.fastjson.TypeReference;
 import com.example.demoserver.game.bag.model.ItemInfo;
 import com.example.demoserver.game.bag.model.ItemProperty;
 import com.example.demoserver.game.player.model.Player;
@@ -38,7 +41,8 @@ public class RolePropertyService {
     public boolean loadThingPropertyToPlayer(Player player, ItemInfo itemInfo) {
 
 
-        List<ItemProperty> itemPropertyList= SplitParameters.split(itemInfo);
+        //转换成
+        List<ItemProperty> itemPropertyList= JSON.parseObject(itemInfo.getItemInfoProperty(),new TypeReference<List<ItemProperty>>(){});
 
         Map<Integer,RoleProperty> playerPropertyMap = player.getRolePropertyMap();
 
@@ -54,17 +58,23 @@ public class RolePropertyService {
 
         });
 
-        player.setRolePropertyMap(playerPropertyMap);
+       // player.setRolePropertyMap(playerPropertyMap);
 
-        // 计算战力
-       // playerDataService.computeAttack(player);
+        log.info("加载物品的增益到玩家属性中成功");
+
         return true;
     }
 
 
+    /**
+     * 移除角色中装备所增加的属性
+     * @param player
+     * @param itemInfo
+     * @return
+     */
     public boolean removeThingPropertyForPlayer(Player player, ItemInfo itemInfo) {
 
-        List<ItemProperty> itemPropertyList= SplitParameters.split(itemInfo);
+        List<ItemProperty> itemPropertyList= JSON.parseObject(itemInfo.getItemInfoProperty(),new TypeReference<List<ItemProperty>>(){});
 
         Map<Integer,RoleProperty> playerPropertyMap = player.getRolePropertyMap();
 
@@ -80,15 +90,10 @@ public class RolePropertyService {
 
         });
 
-        player.setRolePropertyMap(playerPropertyMap);
-
-        // 计算战力
-        //playerDataService.computeAttack(player);
+       // player.setRolePropertyMap(playerPropertyMap);
 
         return true;
     }
-
-
 
 
     /**
@@ -96,9 +101,10 @@ public class RolePropertyService {
      * @param player 角色属性
      */
     public void loadRoleProperty(Player player) {
+
         Map<Integer,RoleProperty> rolePropertyMap = player.getRolePropertyMap();
 
-        for (int key=1; key <=10; key++ ) {
+        for (int key=1; key <=9; key++ ) {
             RoleProperty roleProperty = rolePropertyCache.get(key);
             // 每个玩家角色的属性都独立
             RoleProperty playerRoleProperty  = new RoleProperty();
@@ -106,6 +112,7 @@ public class RolePropertyService {
             rolePropertyMap.put(roleProperty.getId(),playerRoleProperty);
             //log.debug("rolePropertyMap {}",rolePropertyMap);
         }
+
 
         // 加载hp
         Optional.ofNullable(rolePropertyMap.get(1))

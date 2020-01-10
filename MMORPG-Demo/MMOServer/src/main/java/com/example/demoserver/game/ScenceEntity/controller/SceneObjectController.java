@@ -39,9 +39,7 @@ public class SceneObjectController {
         Player player = playerDataService.getPlayer(ctx);
         Integer npcId = Integer.valueOf(args[1]);
         gameObjectService.talkWithNpc(npcId,ctx);
-        // TalkWithEvent talkWithEvent = new TalkWithEvent(player,npcId);
-        //EventManager.publish(talkWithEvent);
-    }
 
+    }
 
 }

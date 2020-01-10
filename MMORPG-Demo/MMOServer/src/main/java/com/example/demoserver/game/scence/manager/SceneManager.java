@@ -24,14 +24,13 @@ import java.util.concurrent.TimeUnit;
  * Description: 场景心跳定时器
  */
 
-
 @Component
 @Slf4j
 
 public class SceneManager {
 
 
-   /* *//** 单线程定时执行器 *//*
+    // 单线程定时执行器
     private static ThreadFactory sceneLoopThreadFactory = new ThreadFactoryBuilder()
             .setNameFormat("sceneLoop-%d").setUncaughtExceptionHandler((t,e) -> e.printStackTrace()).build();
 
@@ -45,7 +44,9 @@ public class SceneManager {
 
 
 
-    //这个是周期性
+
+
+    //周期性
     @PostConstruct
     private void tick() {
         sceneLoop.scheduleWithFixedDelay(
@@ -59,9 +60,8 @@ public class SceneManager {
         List<GameScene>  gameSceneList= SceneCacheMgr.list();
         for (GameScene gameScene : gameSceneList) {
 
-            // 刷新怪物和NPC
+            // 刷新怪物
             gameScene.getMonsters().values().forEach(this::refreshDeadCreature);
-            gameScene.getNpcs().values().forEach(this::refreshDeadCreature);
 
             // 设置怪物攻击
             gameScene.getMonsters().values().forEach(monster -> monsterAttack(monster,gameScene));
@@ -69,14 +69,13 @@ public class SceneManager {
         }
     }
 
-
-    *//**
+   /* *
      *  刷新死亡的生物
-     * @param scenceEntity  场景中的非玩家生物
-     *//*
+     * @param scenceEntity  场景中的非玩家生物*/
     private void refreshDeadCreature(ScenceEntity scenceEntity) {
         if (scenceEntity.getState() == -1 &&
-                scenceEntity.getDeadTime()+ scenceEntity.getRefreshTime() < System.currentTimeMillis()) {
+                //15秒暂时设定
+                scenceEntity.getDeadTime()+ 15000< System.currentTimeMillis()) {
             ScenceEntity sceneObject = gameObjectManager.get(scenceEntity.getId());
             scenceEntity.setHp(sceneObject.getHp());
             scenceEntity.setState(sceneObject.getState());
@@ -84,16 +83,16 @@ public class SceneManager {
     }
 
 
-    *//**
+   /**
      *  刷新怪物攻击
-     *//*
+     */
+
     private void monsterAttack(Monster monster, GameScene gameScene) {
 
         if (Objects.nonNull(monster.getTarget())) {
-           // monsterAIService.startAI(monster,gameScene);
+           // monsterService.startAI(monster,gameScene);
         }
     }
-*/
 
 
 }

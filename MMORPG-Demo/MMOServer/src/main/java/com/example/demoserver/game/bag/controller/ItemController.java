@@ -46,7 +46,7 @@ public class ItemController {
         if (flag) {
             result = "使用物品成功";
         } else {
-            result = "使用物品失败,角色为拥有这个物品或其他原因";
+            result = "使用物品失败,角色未拥有这个物品或其他原因";
         }
 
         notify.notifyPlayer(player,result);

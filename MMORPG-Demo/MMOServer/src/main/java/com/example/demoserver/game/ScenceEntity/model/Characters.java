@@ -1,7 +1,7 @@
 package com.example.demoserver.game.ScenceEntity.model;
 
 
-//打算让他充当标识接口，起到分类的作用
+//充当标识接口，起到分类的作用
 public interface Characters {
 
 

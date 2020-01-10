@@ -39,14 +39,11 @@ public class MonsterDropItemService {
      */
     void dropItem(Player player, ScenceEntity scenceEntity) {
 
-        /*// 掉落金钱，此处默认按怪物mp掉钱
-        player.moneyChange(scenceEntity.getMp().intValue());
-
-
         // 掉落经验，，此处默认按怪物mp来计算
         player.addExp(scenceEntity.getMp().intValue());
 
-        Bag bag = player.getBag();
+
+      /*  Bag bag = player.getBag();
         List<Drop> dropList = calculateDrop();
         if (Objects.isNull(dropList))
             return;
@@ -68,7 +65,6 @@ public class MonsterDropItemService {
             }
         }*/
     }
-
 
 
     /**

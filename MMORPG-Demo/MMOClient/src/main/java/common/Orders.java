@@ -41,6 +41,8 @@ public enum  Orders {
 
     SHOWBAG("showbag",159,"展示角色背包"),
 
+    PACKBAG("packbag",168,"整理背包"),
+
 
     SHOW_EQUIPMENT_BAR("show_equ_bar",160,"展示装备栏"),
 
@@ -48,7 +50,7 @@ public enum  Orders {
     WEAREQUIP("equip",161,"穿上装备"),
 
 
-    USEGOODS("usegoods",162,"使用道具"),
+    USEITEM("useitem",162,"使用道具"),
 
 
     REMOVE_EQUIP("removeequip",163,"卸下武器，放回背包"),
@@ -57,7 +59,8 @@ public enum  Orders {
     USESKILLS("useskills",164,"使用技能"),
 
 
-    ATTACK("attack",165,"攻击怪物"),
+    ATTACKMONSTER("attackmonster",165,"攻击怪物"),
+
 
     SHOWTASK("showtask",167,"展示可领取的任务"),
 
@@ -127,5 +130,7 @@ public enum  Orders {
     public Integer getOrderId(){
         return orderId;
     }
+
+
 
 }

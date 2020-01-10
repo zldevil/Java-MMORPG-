@@ -40,7 +40,7 @@ public class ItemInfoCache {
     @PostConstruct
     private void init() {
         try {
-            List<ItemInfo> itemInfoList = ExcelUtil.readExcel("static/item.xlsx",new ItemInfo());
+            List<ItemInfo> itemInfoList = ExcelUtil.readExcel("static/itemsInfo.xlsx",new ItemInfo());
 
             itemInfoList.forEach(itemInfo -> {
                 itemInfoCache.put(itemInfo.getId(),itemInfo);
@@ -58,10 +58,9 @@ public class ItemInfoCache {
     public ItemInfo get(Integer id) {
         ItemInfo itemInfo = itemInfoCache.getIfPresent(id);
         // 如果属性集合为空，加载物品属性
-/*
         if (itemInfo != null) {
-            bagService.loadThingsProperties(itemInfo);
-        }*/
+            //bagService.loadItemsProperties(itemInfo);
+        }
         return itemInfo;
     }
 

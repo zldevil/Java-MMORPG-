@@ -4,14 +4,12 @@ import com.alibaba.fastjson.*;
 import com.example.demoserver.common.commons.Constant;
 import com.example.demoserver.game.bag.dao.BagMapper;
 import com.example.demoserver.game.bag.dao.ItemInfoCache;
-import com.example.demoserver.game.bag.model.Bag;
-import com.example.demoserver.game.bag.model.Item;
-import com.example.demoserver.game.bag.model.ItemInfo;
-import com.example.demoserver.game.bag.model.ItemType;
+import com.example.demoserver.game.bag.model.*;
 import com.example.demoserver.game.buff.dao.BuffCache;
 import com.example.demoserver.game.buff.service.BuffService;
 import com.example.demoserver.game.player.manager.PlayerCacheMgr;
 import com.example.demoserver.game.player.model.Player;
+import com.example.demoserver.game.roleproperty.model.RoleProperty;
 import com.example.demoserver.game.roleproperty.service.RolePropertyService;
 import com.example.demoserver.server.notify.Notify;
 import com.google.common.base.Strings;
@@ -53,10 +51,19 @@ public class BagService {
     private BagMapper bagMapper;
 
 
+    /**
+     *
+     * @param ctx
+     */
     public void packBag(ChannelHandlerContext ctx){
 
     }
 
+    /**
+     *
+     * @param player
+     * @return
+     */
     public Map show(Player player){
 
         Bag bag =player.getBag();
@@ -69,7 +76,33 @@ public class BagService {
      *  加载物品的属性内容
      * @param itemInfo 物品
      */
+    public void loadItemsProperties(ItemInfo itemInfo) {
+        List<ItemProperty> itemPropertyList = JSON.parseArray(itemInfo.getItemInfoProperty(),ItemProperty.class);
+        if (itemPropertyList != null) {
+            itemPropertyList.forEach( itemProperty -> {
+                        Integer rolePropertyId = itemProperty.getId();
+                        if (rolePropertyId != null) {
+                            RoleProperty roleProperty = rolePropertyService.getRoleProperty(rolePropertyId);
+                            roleProperty.setPropertyValue(itemProperty.getValue());
+                            itemInfo.getItemRoleProperty()
+                                    .put(roleProperty.getId(),roleProperty);
+                        }
+                    }
+            );
 
+        }
+        log.debug("加载物品的属性内容 thingInfo.getRoleProperties() {}", itemInfo.getItemInfoProperty());
+
+    }
+
+    /**
+     *  获取物品描述
+     * @param thingInfoId 物品id
+     */
+    public ItemInfo getThingInfo(Integer thingInfoId) {
+        return itemInfoCache.get(thingInfoId);
+
+    }
 
     /**
      *  获取物品描述
@@ -120,7 +153,6 @@ public class BagService {
         } else {
             for (int i = 0; i < count; i++) {
 
-
                 Optional.ofNullable(buffCache.get(itemInfo.getBuff()))
                         .ifPresent(buff -> {
                             try {
@@ -129,13 +161,10 @@ public class BagService {
                                 e.printStackTrace();
                             }
                         });
-
             }
         }
         return removeItem(player, item.getId(), count);
     }
-
-
 
     /**
      * 移除物品
@@ -143,6 +172,7 @@ public class BagService {
      * @param itemId
      * @return
      */
+
     public boolean removeItem(Player player, Long itemId, Integer count) {
         Bag bag = player.getBag();
         Map<Long, Item> itemMap = bag.getItemMap();
@@ -163,7 +193,6 @@ public class BagService {
 
             notify.notifyPlayer(player,MessageFormat.format("背包中 {0} 减少了 {1} 个",itemName,count));
 
-            //更新数据库？还是最后更新数据库
             return true;
         }
         return false;
@@ -175,7 +204,6 @@ public class BagService {
      * @param item 物品
      * @return 物品是否放入背包成功
      */
-
     public boolean addItem(Player player, Item item) {
 
         Bag bag = player.getBag();
@@ -247,7 +275,6 @@ public class BagService {
         return flag;
     }
 
-
         /**
          * 创建物品条目
          */
@@ -261,8 +288,9 @@ public class BagService {
     }
 
 
+
     /**
-     *  物品条目随机数
+     *  物品条目随机数生成
      */
     public Long generateItemId() {
 
@@ -276,15 +304,14 @@ public class BagService {
 
         return Long.valueOf(String.valueOf(stringBuilder));
 
-
     }
+
 
     /**
      *   从数据库加载背包
      */
 
     public void loadBag(Player player) {
-
 
         List<Bag> bagList = bagMapper.selectBagByPlayerId(player.getId());
 
@@ -323,19 +350,13 @@ public class BagService {
         saveBag.setItems(JSON.toJSONString(bag.getItemMap()));
 
         if (bagMapper.updateByPrimaryKeySelective(saveBag) > 0) {
+
             log.debug("更新背包成功 {}",saveBag);
-
-
-            TODO 将语句写好;
 
         } else {
             bagMapper.insertBag(saveBag);
             log.debug("保存背包成功 {}",saveBag);
         }
     }
-
-
-
-
 
 }

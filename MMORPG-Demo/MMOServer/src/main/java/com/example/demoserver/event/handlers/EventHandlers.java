@@ -1,14 +1,12 @@
 package com.example.demoserver.event.handlers;
 
 import com.example.demoserver.event.dispatch.EventManager;
-import com.example.demoserver.event.events.LevelEvent;
-import com.example.demoserver.event.events.MonsterDeadEvent;
-import com.example.demoserver.event.events.TalkEvent;
-import com.example.demoserver.event.events.WearEquipmentEvent;
+import com.example.demoserver.event.events.*;
 import com.example.demoserver.game.ScenceEntity.model.Monster;
 import com.example.demoserver.game.bag.model.Item;
 import com.example.demoserver.game.player.manager.PlayerCacheMgr;
 import com.example.demoserver.game.player.model.Player;
+import com.example.demoserver.game.task.service.TaskService;
 import com.example.demoserver.server.notify.Notify;
 import io.netty.channel.ChannelHandlerContext;
 import lombok.extern.slf4j.Slf4j;
@@ -38,20 +36,22 @@ public class EventHandlers {
         EventManager.registe(WearEquipmentEvent.class, this::equipCheck);
         log.info("穿戴装备事件注册成功");
 
+        EventManager.registe(ActiveTaskEvent.class,this::activatTask);
+        log.info("任务激活事件注册成功");
+
     }
 
     @Autowired
     private PlayerCacheMgr playerCacheMgr;
 
+    @Autowired
+    private TaskService taskService;
+
     /**
      * 玩家跟npc对话
      */
     private void talk(TalkEvent conversationEvent) {
-       /* taskService.checkTaskProgress(conversationEvent.getPlayer(),
-                TaskType.CONVERSATION,
-                FinishField.ENTITY_TYPE,
-                conversationEvent.getNpc().getEntityTypeId(),
-                progress -> progress.addProgressNum(1));*/
+
     }
 
     /**
@@ -89,6 +89,15 @@ public class EventHandlers {
     }
 
 
+    /**
+     * 激活任务
+     * @param activatTaskEvent
+     */
+    private void activatTask(ActiveTaskEvent activatTaskEvent) {
+        for (Integer id : activatTaskEvent.getTaskIdList()) {
+            taskService.addAcceptTask(activatTaskEvent.getPlayer(), id);
+        }
+    }
 
     /**
      * 怪物死亡事件处理 注意，不在这设置monster的属性
@@ -116,5 +125,7 @@ public class EventHandlers {
                 deadMonster.getEntityTypeId().intValue(),
                 progress -> progress.addProgressNum(1));*/
     }
+
+
 
 }

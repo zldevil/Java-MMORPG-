@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.example.demoserver.game.task.dao.TaskProgressMapper">
+    <resultMap id="BaseResultMap" type="com.example.demoserver.game.task.model.TaskProgress">
+        <id column="playerId" property="playerId" jdbcType="INTEGER"/>
+        <result column="taskId" property="taskId" jdbcType="INTEGER"/>
+        <result column="taskState" property="taskState" jdbcType="INTEGER"/>
+        <result column="beginTime" property="beginTime" jdbcType="BIGINT"/>
+        <result column="endTime" property="endTime" jdbcType="BIGINT"/>
+        <result column="progress" property="progress" jdbcType="VARCHAR"/>
+    </resultMap>
+    
+    <select id="selectByPrimaryId" resultMap="BaseResultMap" parameterType="com.example.demoserver.game.task.model.TaskProgress">
+        select *from taskprogress where taskId=#{taskId} AND playerId=#{playerId}
+    </select>
+
+    <select id="selectByPlayerId" resultMap="BaseResultMap" >
+        select *from taskprogress where playerId=#{playerId}
+    </select>
+
+    <insert id="insertTaskProgress" parameterType="com.example.demoserver.game.task.model.TaskProgress">
+        insert into (playerId,taskId,taskState,beginTime,endTime,progress)
+        values (
+        #{playerId},#{taskId},#{taskState},#{beginTime},#{endTime},#{progress}
+        )
+    </insert>
+
+    <update id="updateTaskProgressByPrimaryKey" parameterType="com.example.demoserver.game.task.model.TaskProgress">
+         UPDATE ENTITY_RELATION
+            set
+                playerId=#{playerId},
+                taskId=#{taskId},
+                taskState=#{taskState},
+                beginTime=#{beginTime},
+                endTime=#{endTime},
+                progress=#{progress}
+            WHERE playerId=#{playerId} AND taskId=#{taskId}
+
+    </update>
+
+    <delete id="deleteTaskProgressByPrimaryKey" parameterType="com.example.demoserver.game.task.model.TaskProgress">
+        delete from taskprogress
+        where playerId=#{playerId} and taskId=#{taskId}
+    </delete>
+
+</mapper>

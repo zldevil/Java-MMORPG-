@@ -61,7 +61,19 @@ public enum  Orders {
 
     ATTACKMONSTER("attackmonster",165,"攻击怪物"),
 
-    SHOWTASK("showtask",167,"展示可领取的任务"),
+    SHOWTASK("showtask",167,"展示所有的任务"),
+
+    SHOWACCEPTINGTASKANDPROGRESS("showacceptingtaskandprogress",168,"展示任务进度"),
+
+    ACCEPTTASK("accepttask",169,"接受任务"),
+
+    FINISHTASK("finishtask",170,"完成任务"),
+    /**
+     *
+     */
+    ADDFRIEND("addfriend",180,"添加好友"),
+
+    SHOWFRIENDLIST("showfriendlist",181,"显示好友列表"),
 
 
 

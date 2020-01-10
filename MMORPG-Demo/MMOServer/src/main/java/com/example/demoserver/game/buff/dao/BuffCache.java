@@ -23,7 +23,7 @@ public class BuffCache {
     @PostConstruct
     public void init(){
         try {
-            List<Buff> buffList= ExcelUtil.readExcel("/static/Buff.xlsx",new Buff());
+            List<Buff> buffList= ExcelUtil.readExcel("static/buff.xlsx",new Buff());
             buffList.forEach(buff -> {
                 buffCache.put(buff.getId(),buff);
             });

@@ -13,6 +13,8 @@ import com.example.demoserver.game.buff.model.Buff;
 import com.example.demoserver.game.roleproperty.model.RoleProperty;
 import com.example.demoserver.game.scence.model.GameScene;
 import com.example.demoserver.game.skills.model.Skill;
+import com.example.demoserver.game.task.model.Task;
+import com.example.demoserver.game.task.model.TaskProgress;
 import io.netty.channel.ChannelHandlerContext;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -41,14 +43,12 @@ public class Player extends UserEntity implements Character {
     private ChannelHandlerContext ctx;
 
     /** 当前目标 */
-    //当前目标的作用是什么？攻击
-    private Characters target;
+    private Character target;
 
     /**  受职业配置表和装备影响 */
     private Long hp;
 
     private Long mp;
-
 
     private Integer level;
 
@@ -57,13 +57,13 @@ public class Player extends UserEntity implements Character {
      */
     List<Buff> buffList=new ArrayList<>();
 
-    //构建背包
+    /** 构建背包 **/
     Bag bag=new Bag(this.getId(),16);
 
-    //装备栏
+    /** 装备栏 **/
     private Map<String, Item> equipmentBar = new ConcurrentHashMap<>();
 
-    // 玩家当前所处场景。
+    /** 场景目前 **/
     private GameScene currentScene;
 
     /**
@@ -71,11 +71,19 @@ public class Player extends UserEntity implements Character {
      */
     private Map<Integer , Skill> skillMap =new ConcurrentHashMap<>();
 
-
     /**
      * 角色属性，key为每一个属性的id，value为属性对象
      */
     private Map<Integer, RoleProperty> rolePropertyMap = new ConcurrentHashMap<>();
+
+    /**
+     * 定义一个Map，存放接过的任务
+     */
+    private  Map<Integer, TaskProgress> taskProgressMap =new ConcurrentHashMap<>();
+
+
+
+
 
 
     /**
@@ -123,9 +131,8 @@ public class Player extends UserEntity implements Character {
 
     @Override
     public void setTarget(Character target) {
-
+        this.target=target;
     }
-
 
     public Integer getLevel() {
         return level;

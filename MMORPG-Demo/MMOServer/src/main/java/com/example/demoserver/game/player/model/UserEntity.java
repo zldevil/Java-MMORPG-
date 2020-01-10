@@ -92,6 +92,7 @@ public class UserEntity {
      * 角色经验值
      * */
     private Integer exp;
+
     /**
      * 装备名称
      * */
@@ -113,4 +114,5 @@ public class UserEntity {
     public void setEquipments(String equipments) {
         this.equipments = equipments;
     }
+
 }

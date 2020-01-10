@@ -36,7 +36,6 @@ public class PlayerDataService {
     @Autowired
     private PlayerCacheMgr playerCacheMgr;
 
-    //用于回写客户端
     @Autowired
     private Notify notify;
 
@@ -57,6 +56,7 @@ public class PlayerDataService {
      * @param ctx   上下文
      * @return  玩家
      */
+
     public Player getPlayerByCtx(ChannelHandlerContext ctx) {
 
         return playerCacheMgr.getPlayerByCtx(ctx);
@@ -177,7 +177,7 @@ public class PlayerDataService {
 
         bagService.loadBag(player);
 
-        equipmentBarService.load(player);
+        equipmentBarService.loadEquipment(player);
 
         // 加载到场景中
         gameSceneService.initPlayerScene(player);

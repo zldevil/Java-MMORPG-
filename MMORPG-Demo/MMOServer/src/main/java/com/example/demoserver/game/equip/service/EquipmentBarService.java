@@ -111,22 +111,24 @@ public class EquipmentBarService {
     /**
      * 加载装备
      */
-    public void load(Player player) {
+    public void loadEquipment(Player player) {
         String equipmentBarString = player.getEquipments();
+
         if (!Strings.isNullOrEmpty(equipmentBarString)) {
-            Map<String, Item> equipmentBar = JSON.parseObject(equipmentBarString,
+
+            Map<String, Item> equipmentBarMap = JSON.parseObject(equipmentBarString,
                     new TypeReference<Map<String, Item>>() {
                     });
             log.debug("  equipmentBarString {}", equipmentBarString);
-            log.debug("  equipmentBar{}", equipmentBar);
+            log.debug("  equipmentBar{}", equipmentBarMap);
             // 很重要，将从数据库还原的装备加载到角色
 
-             player.setEquipmentBar(equipmentBar);
+            player.setEquipmentBar(equipmentBarMap);
 
-            equipmentBar.values()
-                    .forEach(item ->
+            equipmentBarMap.values()
+                    .forEach(itemEquipment ->
                             // 改变玩家属性
-                            rolePropertyService.loadThingPropertyToPlayer(player, item.getItemInfo()));
+                            rolePropertyService.loadThingPropertyToPlayer(player, itemEquipment.getItemInfo()));
         }
 
     }

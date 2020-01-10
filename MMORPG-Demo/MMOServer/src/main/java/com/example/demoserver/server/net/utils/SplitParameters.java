@@ -22,11 +22,4 @@ public class SplitParameters {
         return param;
     }
 
-    public static List<ItemProperty> split(ItemInfo itemInfo){
-
-
-        List<ItemProperty> itemPropertyList=JSONObject.parseArray(itemInfo.getItemInfoProperty(),ItemProperty.class);
-
-        return itemPropertyList;
-    }
 }

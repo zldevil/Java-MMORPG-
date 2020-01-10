@@ -9,6 +9,7 @@ public class Item {
 
     //生成算法生成
     private long id;
+
     //代表数量，所以叠加
     private Integer count; // 武器不能叠加
 

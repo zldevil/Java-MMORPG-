@@ -34,9 +34,7 @@ public class BagController  {
     private Notify notificationManager;
 
 
-    
     @RequestMapping(getOrder = Orders.PACKBAG)
-
     public void packBag(ChannelHandlerContext ctx, Msg message) {
         bagService.packBag(ctx);
     }
