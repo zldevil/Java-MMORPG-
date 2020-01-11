@@ -17,7 +17,7 @@ public class PlayerCacheMgr  {
 
 
     //CTX——player缓存
-    //为什么缓存这个
+
     private static Cache<ChannelHandlerContext, Player> ctxPlayerCache = CacheBuilder.newBuilder()
             // 设置并发级别，最多8个线程同时写
             .concurrencyLevel(10)
@@ -82,7 +82,7 @@ public class PlayerCacheMgr  {
      *  根据玩家id获取ChannelHandlerContext
      * @param playerId 玩家id
      */
-    public ChannelHandlerContext getCxtByPlayerId(long playerId) {
+    public ChannelHandlerContext getCxtByPlayerId(Integer playerId) {
         return IdCtxCache.getIfPresent(playerId);
     }
 

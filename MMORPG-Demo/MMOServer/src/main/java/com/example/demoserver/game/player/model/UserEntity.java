@@ -98,6 +98,17 @@ public class UserEntity {
      * */
     private String equipments;
 
+    /** 代表朋友的JSON串**/
+    private String friends;
+
+
+    private Integer money;
+
+    //加入的公会的id
+    private Integer guildId;
+
+    //在工会的位置
+    private Integer positionInGuild;
 
     public Integer getExp() {
         return exp;

@@ -32,12 +32,8 @@ public class Task {
     private FinishCondition finishConditionObject = new FinishCondition();
 
 
-    public FinishCondition getFinishCondition() {
-        /*if(finishConditionList.size() == 0 && !Strings.isNullOrEmpty(finishCondition)) {
+    public FinishCondition getFinishConditionObject() {
 
-            //AddAll参数为Collection
-            finishConditionList.add((FinishCondition)JSON.toJSON(finishCondition));
-        }*/
         finishConditionObject = JSON.parseObject(finishCondition, new TypeReference<FinishCondition>() {
         });
         return finishConditionObject;

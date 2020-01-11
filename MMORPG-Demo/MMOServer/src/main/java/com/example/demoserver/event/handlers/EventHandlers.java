@@ -39,6 +39,8 @@ public class EventHandlers {
         EventManager.registe(ActiveTaskEvent.class,this::activatTask);
         log.info("任务激活事件注册成功");
 
+        EventManager.registe(MoneyListenerEvent.class,this::moneyNumChange);
+
     }
 
     @Autowired
@@ -46,6 +48,9 @@ public class EventHandlers {
 
     @Autowired
     private TaskService taskService;
+
+    @Autowired
+    private Notify notify;
 
     /**
      * 玩家跟npc对话
@@ -126,6 +131,21 @@ public class EventHandlers {
                 progress -> progress.addProgressNum(1));*/
     }
 
+    public void moneyNumChange(MoneyListenerEvent moneyListenerEvent){
 
+        if (moneyListenerEvent.getMoney() > moneyListenerEvent.getPlayer().getMoney()) {
+            moneyListenerEvent.getPlayer().setMoney(0);
+            notify.notifyPlayer(moneyListenerEvent.getPlayer(),"你身上没钱了");
+        }
+        if (moneyListenerEvent.getMoney() > 0) {
+            notify.notifyPlayer(moneyListenerEvent.getPlayer(), MessageFormat.format("你的金币增加了{0}",moneyListenerEvent.getMoney()));
+        }
 
+        if (moneyListenerEvent.getMoney() < 0) {
+            notify.notifyPlayer(moneyListenerEvent.getPlayer(), MessageFormat.format("你的金币减少了{0}",moneyListenerEvent.getMoney()));
+        }
+    }
 }
+
+
+

@@ -76,6 +76,19 @@ public enum  Orders {
     SHOWFRIENDLIST("showfriendlist",181,"显示好友列表"),
 
 
+    PRIVATECHAT("privatechat",190,"和玩家私聊"),
+
+    PUBLICCHAT("publicchat",191,"公共频道聊天"),
+
+    BUGGOOD("buygood",200,"在商店买货物"),
+
+    SHOWGOODSONSHOP("showgoodsonshop",201,"展示商店中的正在销售的货物"),
+
+    CREATEGUILD("createguild",210,"创建公会"),
+
+    JIONGUILD("jooinguild",211,"加入公会"),
+
+    LEAVEGUILD("leaveguild",212,"离开工会"),
 
     /**
      * 玩家注册登录

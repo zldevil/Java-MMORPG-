@@ -117,7 +117,7 @@ public class TaskService {
             taskProgressNow.setTaskState(TaskState.RUNNING.getCode());
 
             // 初始化进度
-            Progress progress =new Progress(task.getFinishCondition());
+            Progress progress =new Progress(task.getFinishConditionObject());
 
             taskProgressNow.setProgress(JSON.toJSONString(progress));
 
@@ -181,7 +181,7 @@ public class TaskService {
 
 
     /**
-     * load任务进度到玩家实体
+     * load任务进度到玩家实体,初始化时使用
      */
     public void loadTaskProgress(Player player) {
 
@@ -261,6 +261,7 @@ public class TaskService {
         }
         Task task = taskCache.getTask(taskId);
         TaskProgress taskProgress = new TaskProgress(player, task);
+
 
 
         taskProgress.setProgressObject(new Progress( taskProgress.getTask().getFinishConditionObject()));

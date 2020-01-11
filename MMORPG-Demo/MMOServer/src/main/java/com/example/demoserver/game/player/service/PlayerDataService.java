@@ -68,7 +68,7 @@ public class PlayerDataService {
      * @param playerId  玩家id
      * @return 如果存在玩家记录则返回玩家，不存在则返回空，注意玩家可能尚未初始化
      */
-    public Player getPlayerById(long playerId) {
+    public Player getPlayerById(Integer playerId) {
 
         ChannelHandlerContext ctx = playerCacheMgr.getCxtByPlayerId(playerId);
         if(Objects.nonNull(ctx)) {
@@ -91,7 +91,7 @@ public class PlayerDataService {
      * @param playerId  玩家id
      * @return 如果玩家在线则返回玩家，如果不在线则返回空
      */
-    public Player getOnlinePlayerById(long playerId) {
+    public Player getOnlinePlayerById(Integer playerId) {
         ChannelHandlerContext ctx = playerCacheMgr.getCxtByPlayerId(playerId);
         if(null != ctx) {
             return getPlayerByCtx(ctx);
