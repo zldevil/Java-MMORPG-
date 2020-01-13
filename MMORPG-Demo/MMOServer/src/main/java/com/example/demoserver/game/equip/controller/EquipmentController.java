@@ -16,6 +16,7 @@ import com.example.demoserver.server.notify.Notify;
 import io.netty.channel.ChannelHandlerContext;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import java.text.MessageFormat;
 import java.util.Map;
@@ -23,6 +24,7 @@ import java.util.Objects;
 
 @Controller
 @Slf4j
+@Component
 public class EquipmentController {
 
 
@@ -35,13 +37,17 @@ public class EquipmentController {
     @Autowired
     private BagService bagsService;
 
+    @Autowired
+    private Notify notify;
+
 
     @RequestMapping(getOrder = Orders.WEAREQUIP)
     private void wearEquip(ChannelHandlerContext ctx, Msg message) {
         String[] command = SplitParameters.split(message);
-        Integer equipmentId = Integer.valueOf(command[1]);
+        Long equipmentId = Long.valueOf(command[1]);
         Player player = playerDataService.getPlayer(ctx);
-        ItemInfo itemInfo = bagsService.getItemInfo(equipmentId);
+        ItemInfo itemInfo = player.getBag().getItemMap().get(equipmentId).getItemInfo();
+
         boolean flag = equipmentBarService.wearEquip(player, equipmentId);
 
         if (flag) {
@@ -53,42 +59,14 @@ public class EquipmentController {
         }
     }
 
+
     @RequestMapping(getOrder = Orders.SHOW_EQUIPMENT_BAR)
     private void showEquip(ChannelHandlerContext ctx, Msg message) {
         Player player = playerDataService.getPlayerByCtx(ctx);
-        if (Objects.isNull(player)) {
-            Notify.notifyByCtxWithMsgId(ctx, "装备栏：\n" +
-                    " 角色尚未登陆", message.getId());
-            return;
-        }
 
-        Map<String, Item> equipmentBar = player.getEquipmentBar();
-        StringBuilder sb = new StringBuilder();
-        equipmentBar.values().stream().
-                map(Item::getItemInfo).
-                forEach(
-                        itemInfo -> {
-                            String locationName= EquitmentPart.getPartByCode(itemInfo.getLocation());
-                            sb.append(MessageFormat.format(" {0} 上的装备为 {1} ",
-                                    locationName, itemInfo.getName())
-                            );
-
-                           /* itemInfo.getItemRoleProperty().values().forEach(
-                                    roleProperty -> sb.append(MessageFormat.format(" {0}：{1} ",
-                                            roleProperty.getName(), roleProperty.getThingPropertyValue()))
-                            );*/
-                            sb.append("\n");
-                        }
-                );
-
-        if (equipmentBar.isEmpty()) {
-            sb.append("你没有穿戴装备");
-        }
-
-        Notify.notifyByCtx(ctx,sb);
+        equipmentBarService.showEquip(player);
 
     }
-
 
     @RequestMapping(getOrder = Orders.REMOVE_EQUIP)
     private void removeEquip(ChannelHandlerContext ctx, Msg message) {

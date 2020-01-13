@@ -2,6 +2,7 @@ package com.example.demoserver.game.task.service;
 
 import com.alibaba.fastjson.*;
 import com.alibaba.fastjson.TypeReference;
+import com.example.demoserver.common.commons.Character;
 import com.example.demoserver.event.dispatch.EventManager;
 import com.example.demoserver.event.events.ActiveTaskEvent;
 import com.example.demoserver.game.bag.model.Item;
@@ -41,17 +42,15 @@ public class TaskService {
     @Autowired
     public BagService bagService;
 
-
     /**
-     *
      * @param player
      */
     public void showAllTask(Player player){
         List<Task> taskList=TaskCache.taskCache.asMap().values().stream().collect(Collectors.toList());
         StringBuilder stringBuilder=new StringBuilder();
         taskList.forEach(task -> {
-            stringBuilder.append(MessageFormat.format(" 任务ID:{0} 任务名称为{1} 任务详情为{2} 接受任务需要达到{3}级以上",
-                    task.getId(),task.getName(),task.getTaskDescription(),task.getLevel()));
+            stringBuilder.append(MessageFormat.format(" 任务ID:{0} 任务名称为{1} 任务奖励为{2} 接受任务需要达到{3}级以上",
+                    task.getId(),task.getName(),task.getRewardDescription(),task.getLevel()));
             stringBuilder.append("\n");
         });
         notify.notifyPlayer(player,stringBuilder);
@@ -59,7 +58,7 @@ public class TaskService {
 
 
     /**
-     * 使用showTask查看当前正在执行的任务以及进度
+     * 使用showtask查看当前正在执行的任务以及进度
      */
     public List<TaskProgress> showAcceptingTaskAndProgress(Player player) {
         return player.getTaskProgressMap().values()
@@ -67,6 +66,7 @@ public class TaskService {
                 .filter(t -> t.getTaskState().equals(TaskState.RUNNING))
                 .collect(Collectors.toList());
     }
+
 
     /**
      *
@@ -83,12 +83,13 @@ public class TaskService {
 
         if(Objects.nonNull(taskProgress) && taskProgress.getTaskState().equals(TaskState.FINISH.getCode())){
 
-            notify.notifyPlayer(player,"已经领取过此任务");
+            notify.notifyPlayer(player,"已经完成此任务并领取过奖励");
         }
 
         Task task=taskCache.getTask(taskId);
         // 新建创建任务进度
-        TaskProgress questProgress = getOrCreateProgress(task,player);
+        TaskProgress questProgress = createTaskProgress(task,player);
+
         if(Objects.nonNull(questProgress)) {
             notify.notifyPlayer(player,MessageFormat.format("接受任务 {0}  ",
                     task.getName()));
@@ -103,7 +104,7 @@ public class TaskService {
      * @return 一个任务进度
      */
 
-    public TaskProgress getOrCreateProgress(Task task, Player player) {
+    public TaskProgress createTaskProgress(Task task, Player player) {
         // 获取玩家的任务进度
         TaskProgress taskProgress = player.getTaskProgressMap().get(task.getId());
 
@@ -155,7 +156,8 @@ public class TaskService {
             taskProgress.setEndTime(System.currentTimeMillis());
             taskProgress.setTaskState(TaskState.FINISH.getCode());
 
-            TODO 数据库操作;
+            //数据库操作
+            saveOrUpdateProgress(taskProgress);
 
             TaskReward taskReward =taskProgress.getTask().getTaskReward();
             List<TaskReward.RewardItem> itemList = taskReward.getItemList();
@@ -168,6 +170,9 @@ public class TaskService {
             if(nextTask.size() != 0) {
                 EventManager.publish(new ActiveTaskEvent(player, nextTask));
             }
+
+            Integer exp=taskReward.getExp();
+            player.setExp(player.getExp()+exp);
 
         }else {
             notify.notifyPlayer(player,"任务还没完成");
@@ -190,10 +195,6 @@ public class TaskService {
         for (TaskProgress taskProgress : taskProgresses) {
             Task task = taskCache.getTask(taskProgress.getTaskId());
             taskProgress.setTask(task);
-
-           /* if(!Strings.isNullOrEmpty(taskProgress.getProgress())) {
-                taskProgress.getProgressObject()=JSON.parseObject(taskProgress.getProgress(),new TypeReference<Progress>(){});
-            }*/
 
             player.getTaskProgressMap().put(taskProgress.getTaskId(), taskProgress);
             if(taskProgress.getTaskState().equals(TaskState.RUNNING.getCode())) {
@@ -222,14 +223,6 @@ public class TaskService {
         });
     }
 
-    /**
-     *  更新玩家任务进程
-     * @param progress 更新玩家进程
-     */
-    public void updateTaskProgress(TaskProgress progress) {
-
-       //threadPool.execute(() -> taskProgressMapper.updateByPrimaryKeySelective(progress) );
-    }
 
     /**
      *  移除数据库玩家任务进程
@@ -243,13 +236,12 @@ public class TaskService {
     }
 
 
-
     /**
      * 新玩家初始化任务
      * @param initedPlayer
      */
     public void getNewPlayerTask(Player initedPlayer) {
-        //默认暂时写死
+
         addAcceptTask(initedPlayer, 1);
 
     }
@@ -260,12 +252,7 @@ public class TaskService {
             return;
         }
         Task task = taskCache.getTask(taskId);
-        TaskProgress taskProgress = new TaskProgress(player, task);
-
-
-
-        taskProgress.setProgressObject(new Progress( taskProgress.getTask().getFinishConditionObject()));
-       // taskProgress.getProgressObject()=new Progress( taskProgress.getTask().getFinishConditionObject());
+        TaskProgress taskProgress = createTaskProgress(task,player);
 
         //插入数据库
         if(taskProgressMapper.insertTaskProgress(taskProgress) <= 0) {
@@ -274,15 +261,27 @@ public class TaskService {
 
         player.getTaskProgressMap().put(taskId, taskProgress);
 
-
         notify.notifyPlayer(player,MessageFormat.format("解锁新任务 id为 {0},任务名称：{1} ",task.getId(),task.getName()));
 
+    }
+
+    //检测任务进度
+    public void checkTaskProgress(Player player, Character character){
+        player.getTaskProgressMap().values().forEach(taskProgress -> {
+           if(taskProgress.getProgressObject().getCondition().getTarget().equals(character.getId())){
+                taskProgress.getProgressObject().addProgressNum(1);
+                if(taskProgress.getProgressObject().finished){
+                    //通知任务完成
+                }
+            }
+        });
     }
 
     /**
      *  持久化的线程池，由于持久化不需要保证循序，所以直接用多线程的线程池。
      *  线程数 为 服务器核心*2+1
      */
+
     private static ThreadFactory persistenceThreadFactory = new ThreadFactoryBuilder()
             .setNameFormat("persistence-%d").setUncaughtExceptionHandler((t,e) -> e.printStackTrace()).build();
     public static ExecutorService threadPool = new ThreadPoolExecutor(4,8,

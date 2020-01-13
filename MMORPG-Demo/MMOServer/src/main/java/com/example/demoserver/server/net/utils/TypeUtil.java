@@ -14,6 +14,13 @@ public class TypeUtil {
 
         }
 
+        if(field.getType().equals(Float.class)){
+            Integer tmp=(Integer) object;
+            Float result=tmp.floatValue();
+
+            return result;
+        }
+
        return object;
     }
 

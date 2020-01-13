@@ -1,16 +1,6 @@
 package com.example.demoserver.common.commons;
 
 public interface Constant {
-    /**
-     * 角色类型
-     */
-    public static String AP = "AP";
-    public static String MP = "MP";
-
-    /**
-     * 攻速增益
-     */
-    public static double hpAttackIncreaseRate = 0.05;
 
 
     /**
@@ -52,24 +42,7 @@ public interface Constant {
     public static int SUCCESS = 200;
 
     int EQUIP_COMSUM_DURABLE = 5;
-    /**
-     * 元宝代号
-     */
-    Integer YUAN_BAO = 1000;
-    Integer RELIVE_SCENE = 1;
-    long RELIVE_TIME = 5000L;
-    Long COPY_RIGHT_NOTIFY_BEFORE_TIME = 10000L;
 
-    long COPY_GARBAGE_THRESHOLD = 1000000L;
-    long COPY_CHECK_RATE_TIME = 60L;
-    String SYSTEM_MANAGER = "系统";
-    Integer SYSTEM_UNID = -1;
-    Long SYSTEM_ID = 1L;
-    Integer GUILD_PRICE = 1888;
-    Integer GUILD_DEFAULT_WAREHOUSE_SIZE = 50;
-
-    Integer GUILD_DEFAULT_MEMBER_SIZE = 27;
-    Integer NEW_PLAYER_TASK_ID = 3;
     Integer EXPITEM_BUFF = 1000;
     Integer EXP_ITEMINFO = 2000;
 

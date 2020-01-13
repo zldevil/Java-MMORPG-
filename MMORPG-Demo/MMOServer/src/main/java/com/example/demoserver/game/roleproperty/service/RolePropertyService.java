@@ -55,10 +55,13 @@ public class RolePropertyService {
             Long valueResult =playerPropertyMap.get(idTmp).getPropertyValue()+valueOfItem;
 
             playerPropertyMap.get(idTmp).setPropertyValue(valueResult);
+            playerPropertyMap.put(idTmp, playerPropertyMap.get(idTmp));
+
+
 
         });
 
-       // player.setRolePropertyMap(playerPropertyMap);
+        player.setRolePropertyMap(playerPropertyMap);
 
         log.info("加载物品的增益到玩家属性中成功");
 
@@ -87,10 +90,13 @@ public class RolePropertyService {
             Long valueResult =playerPropertyMap.get(idTmp).getPropertyValue()-valueOfItem;
 
             playerPropertyMap.get(idTmp).setPropertyValue(valueResult);
+            playerPropertyMap.put(idTmp, playerPropertyMap.get(idTmp));
+
+
 
         });
 
-       // player.setRolePropertyMap(playerPropertyMap);
+        player.setRolePropertyMap(playerPropertyMap);
 
         return true;
     }

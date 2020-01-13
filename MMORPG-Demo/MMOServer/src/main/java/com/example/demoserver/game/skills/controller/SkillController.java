@@ -13,6 +13,7 @@ import com.example.demoserver.server.net.utils.SplitParameters;
 import com.example.demoserver.server.notify.Notify;
 import io.netty.channel.ChannelHandlerContext;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
 import java.util.Arrays;
@@ -22,6 +23,7 @@ import java.util.stream.Collectors;
 
 
 @Controller
+@Component
 public class SkillController {
 
 

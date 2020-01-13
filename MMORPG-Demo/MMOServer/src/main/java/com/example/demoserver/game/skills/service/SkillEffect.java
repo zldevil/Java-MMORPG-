@@ -99,7 +99,7 @@ public class SkillEffect {
             Optional.ofNullable(buffer).map(
                     (b) -> {
                         try {
-                            return buffService.startBuffer(target,b);
+                            buffService.startBuffer(target,b);
                         } catch (Exception e) {
                             e.printStackTrace();
                         }

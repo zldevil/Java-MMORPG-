@@ -27,12 +27,11 @@ public class BuffCache {
             buffList.forEach(buff -> {
                 buffCache.put(buff.getId(),buff);
             });
+            log.info("Buff表读取成功");
         } catch (Exception e) {
             e.printStackTrace();
             log.info("Buff读取异常");
         }
-
-        log.info("Buff表读取成功");
 
     }
 

@@ -71,11 +71,6 @@ public class EventHandlers {
             ChannelHandlerContext channelHandlerContext=playerCacheMgr.getCxtByPlayerId(player.getId());
             Notify.notifyByCtx(channelHandlerContext, MessageFormat.format("恭喜你升级{0}级，当前等级为{1}",(newlevel-level),newlevel));
 
-          /*  taskService.checkTaskProgress(player,
-                    TaskType.FUNCTIONAL_UPGRADE,
-                    FinishField.PLAYER_LEVEL,
-                    LevelTarget.PLAYER.getCode(),
-                    progress -> progress.setProgressNumber(newlevel));*/
         });
     }
 
@@ -109,7 +104,7 @@ public class EventHandlers {
      */
     private  void monsterDead(MonsterDeadEvent monsterDeadEvent) {
 
-        //玩家 检查任务进度，掉落物品，触发幸运大爆 ....
+
         //掉落物品
         Player attacter = monsterDeadEvent.getAttacter();
         Monster deadMonster = monsterDeadEvent.getTargetMonster();
@@ -130,6 +125,8 @@ public class EventHandlers {
                 deadMonster.getEntityTypeId().intValue(),
                 progress -> progress.addProgressNum(1));*/
     }
+
+
 
     public void moneyNumChange(MoneyListenerEvent moneyListenerEvent){
 

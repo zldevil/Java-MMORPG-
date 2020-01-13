@@ -10,8 +10,10 @@ import com.example.demoserver.server.net.annoation.RequestMapping;
 import com.example.demoserver.server.net.utils.SplitParameters;
 import io.netty.channel.ChannelHandlerContext;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 @Controller
+@Component
 public class GuildController {
 
     @Autowired

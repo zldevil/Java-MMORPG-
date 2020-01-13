@@ -50,6 +50,7 @@ public class ItemInfoCache {
 
         } catch (Exception e) {
             e.printStackTrace();
+            log.info("物品表加载失败");
         }
 
         }

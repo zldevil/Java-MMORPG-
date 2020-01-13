@@ -3,7 +3,6 @@ package common;
 public enum  Orders {
 
 
-
     /**显示当前位置和可
      *
      以移动的地点*/
@@ -61,10 +60,34 @@ public enum  Orders {
 
     ATTACKMONSTER("attackmonster",165,"攻击怪物"),
 
+    SHOWTASK("showtask",167,"展示所有的任务"),
 
-    SHOWTASK("showtask",167,"展示可领取的任务"),
+    SHOWACCEPTINGTASKANDPROGRESS("showacceptingtaskandprogress",168,"展示任务进度"),
+
+    ACCEPTTASK("accepttask",169,"接受任务"),
+
+    FINISHTASK("finishtask",170,"完成任务"),
+    /**
+     *
+     */
+    ADDFRIEND("addfriend",180,"添加好友"),
+
+    SHOWFRIENDLIST("showfriendlist",181,"显示好友列表"),
 
 
+    PRIVATECHAT("privatechat",190,"和玩家私聊"),
+
+    PUBLICCHAT("publicchat",191,"公共频道聊天"),
+
+    BUGGOOD("buygood",200,"在商店买货物"),
+
+    SHOWGOODSONSHOP("showgoodsonshop",201,"展示商店中的正在销售的货物"),
+
+    CREATEGUILD("createguild",210,"创建公会"),
+
+    JIONGUILD("jooinguild",211,"加入公会"),
+
+    LEAVEGUILD("leaveguild",212,"离开工会"),
 
     /**
      * 玩家注册登录
@@ -130,7 +153,4 @@ public enum  Orders {
     public Integer getOrderId(){
         return orderId;
     }
-
-
-
 }

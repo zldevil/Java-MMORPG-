@@ -9,11 +9,13 @@ import com.example.demoserver.server.net.annoation.Controller;
 import com.example.demoserver.server.net.annoation.RequestMapping;
 import com.example.demoserver.server.net.utils.SplitParameters;
 import io.netty.channel.ChannelHandlerContext;
+import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
 import java.lang.reflect.Parameter;
 
 @Controller
+@Component
 public class ChatController {
 
     @Resource

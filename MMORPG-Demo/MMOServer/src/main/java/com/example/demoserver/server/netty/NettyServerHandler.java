@@ -5,7 +5,6 @@ import com.example.demoserver.common.MsgEntity.Msg;
 import com.example.demoserver.common.proto.MsgProto;
 import com.example.demoserver.game.player.service.PlayerQuitService;
 import com.example.demoserver.server.net.dispatch.MessageDispatcher;
-import com.example.demoserver.server.net.utils.SpringUtil;
 import com.example.demoserver.server.notify.Notify;
 import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
@@ -14,7 +13,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Service;
 
 @Slf4j
 @ChannelHandler.Sharable

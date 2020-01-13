@@ -55,6 +55,8 @@ public class Skill {
 
     private Float skillDamagePercent;
 
+
+    //
     private Long useSkillTime;
 
     /**

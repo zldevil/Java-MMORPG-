@@ -5,10 +5,12 @@ package com.example.demoserver.game.player.service;
 import com.example.demoserver.common.commons.Character;
 import com.example.demoserver.game.bag.service.BagService;
 import com.example.demoserver.game.equip.service.EquipmentBarService;
+import com.example.demoserver.game.friend.service.FriendService;
 import com.example.demoserver.game.player.manager.PlayerCacheMgr;
 import com.example.demoserver.game.player.model.Player;
 import com.example.demoserver.game.roleproperty.service.RolePropertyService;
 import com.example.demoserver.game.scence.servcie.GameSceneService;
+import com.example.demoserver.game.task.service.TaskService;
 import com.example.demoserver.server.notify.Notify;
 import com.example.demoserver.timejob.TimeTaskThreadManager;
 import com.google.common.base.Strings;
@@ -50,6 +52,12 @@ public class PlayerDataService {
 
     @Autowired
     private EquipmentBarService equipmentBarService;
+
+    @Autowired
+    private FriendService friendService;
+
+    @Autowired
+    private TaskService taskService;
 
     /**
      *  通过上下文查找玩家
@@ -173,16 +181,20 @@ public class PlayerDataService {
 
         initLevel(player);
 
+        friendService.initFriend(player);
+
         rolePropertyService.loadRoleProperty(player);
 
         bagService.loadBag(player);
 
         equipmentBarService.loadEquipment(player);
 
+        taskService.loadTaskProgress(player);
+
         // 加载到场景中
         gameSceneService.initPlayerScene(player);
 
-        log.debug("player {}", player);
+        log.debug("角色加载完成");
 
     }
 

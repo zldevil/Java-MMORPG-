@@ -14,11 +14,13 @@ import com.example.demoserver.server.notify.Notify;
 import io.netty.channel.ChannelHandlerContext;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import java.text.MessageFormat;
 import java.util.Map;
 import java.util.Optional;
 
+@Component
 @Controller
 @Slf4j
 public class BagController  {

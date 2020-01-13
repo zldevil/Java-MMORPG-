@@ -1,16 +1,19 @@
 package com.example.demoserver.game.friend.service;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.TypeReference;
 import com.example.demoserver.game.friend.model.Friend;
 import com.example.demoserver.game.player.manager.RoleCache;
 import com.example.demoserver.game.player.model.Player;
 import com.example.demoserver.game.player.service.PlayerDataService;
 import com.example.demoserver.server.notify.Notify;
+import com.google.common.base.Strings;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.text.MessageFormat;
 import java.util.Date;
+import java.util.Map;
 import java.util.Optional;
 
 @Service
@@ -64,5 +67,17 @@ public class FriendService {
             sb.append("好友列表为空\n");
         }
         notify.notifyPlayer(player,sb.toString());
+    }
+
+    public void initFriend(Player player) {
+
+        // 如果玩家好友列表为空，初始化玩家列表
+        if (!Strings.isNullOrEmpty(player.getFriends()) && player.getFriendMap().isEmpty()) {
+            Map<Long, Friend> friendMap = JSON.parseObject(player.getFriends(),
+                    new TypeReference<Map<Long,Friend>>(){});
+            friendMap.values().forEach(friend -> {
+                player.getFriendMap().put(friend.getPlayerId(),friend);
+            });
+        }
     }
 }

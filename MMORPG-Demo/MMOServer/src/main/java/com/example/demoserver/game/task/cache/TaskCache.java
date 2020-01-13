@@ -6,12 +6,13 @@ import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
 import java.util.List;
 import java.util.Map;
 
-@Component
+@Service
 @Slf4j
 public class TaskCache {
     public static Cache<Integer, Task> taskCache = CacheBuilder.newBuilder().removalListener(
@@ -21,17 +22,21 @@ public class TaskCache {
 
     @PostConstruct
     public void init(){
-        List<Task> taskList = null;
+
+        //出错
         try {
-            taskList = ExcelUtil.readExcel("static/task.xlsx",new Task());
+            List<Task> taskList  = ExcelUtil.readExcel("static/task.xlsx",new Task());
+
+            taskList.forEach(task -> {
+                taskCache.put(task.getId(),task);
+            });
+            log.info("任务加载完成");
+
         } catch (Exception e) {
             e.printStackTrace();
+            log.info("Task加载出错");
         }
-        taskList.forEach(task -> {
-            taskCache.put(task.getId(),task);
-        });
 
-        log.info("任务加载完成");
     }
 
     public Task getTask(Integer taskId){

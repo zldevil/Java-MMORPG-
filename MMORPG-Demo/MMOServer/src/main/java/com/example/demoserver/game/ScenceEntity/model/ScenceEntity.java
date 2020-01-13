@@ -92,9 +92,6 @@ public class ScenceEntity {
         this.roleType = roleType;
     }
 
-
-
-
     //设置死亡时间，怪物被杀死后定时重生
     private long deadTime;
 

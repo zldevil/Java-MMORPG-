@@ -8,6 +8,9 @@
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
+  <component name="FavoritesManager">
+    <favorites_list name="democlient" />
+  </component>
   <component name="MavenImportPreferences">
     <option name="generalSettings">
       <MavenGeneralSettings>
@@ -69,7 +72,9 @@
       <workItem from="1578026522217" duration="7261000" />
       <workItem from="1578101996974" duration="13000" />
       <workItem from="1578102210387" duration="12000" />
-      <workItem from="1578102408788" duration="9102000" />
+      <workItem from="1578102408788" duration="10484000" />
+      <workItem from="1578898430924" duration="914000" />
+      <workItem from="1578902834916" duration="3358000" />
     </task>
     <servers />
   </component>

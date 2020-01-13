@@ -21,7 +21,7 @@ public class GuildCache {
             notification->log.info("被移除的原因")
     ).build();
 
-    @PostConstruct
+    //@PostConstruct
     public void init(){
 
     }

@@ -65,8 +65,6 @@ public class PlayerLoginService {
             //调用缓存，在登录时将上下文ctx与player加载到缓存中
             playerCacheMgr.putCtxPlayer(ctx,player);
 
-            // 保存playerId跟ChannelHandlerContext之间的关系
-            //明明是palyerId与ctx之间的映射关系，channelId是什么鬼
 
             //在登录时将上下文id与ctx加载到缓存中
             playerCacheMgr.savePlayerCtx(playerId,ctx);

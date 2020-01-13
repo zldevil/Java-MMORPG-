@@ -9,54 +9,6 @@ import lombok.Data;
 public class UserEntity {
 
 
-    public Integer getId() {
-        return Id;
-    }
-
-    public void setId(Integer id) {
-        Id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public Integer getUserId() {
-        return userId;
-    }
-
-    public void setUserId(Integer userId) {
-        this.userId = userId;
-    }
-
-    public Integer getState() {
-        return state;
-    }
-
-    public void setState(Integer state) {
-        this.state = state;
-    }
-
-    public Integer getTypeId() {
-        return typeId;
-    }
-
-    public void setTypeId(Integer typeId) {
-        this.typeId = typeId;
-    }
-
-    public Integer getSenceId() {
-        return senceId;
-    }
-
-    public void setSenceId(Integer senceId) {
-        this.senceId = senceId;
-    }
-
     /**
      * 玩家ID
      */
@@ -70,7 +22,6 @@ public class UserEntity {
     /**
      * 从属用户
      */
-    //角色属于哪个用户
     private Integer userId;
 
     /**
@@ -101,14 +52,17 @@ public class UserEntity {
     /** 代表朋友的JSON串**/
     private String friends;
 
-
+    /** 代表玩家所拥有的金钱**/
     private Integer money;
 
-    //加入的公会的id
+    /** 代表玩家加入的公会ID**/
     private Integer guildId;
 
-    //在工会的位置
+    /** 代表玩家在公会中的职位**/
     private Integer positionInGuild;
+
+
+
 
     public Integer getExp() {
         return exp;

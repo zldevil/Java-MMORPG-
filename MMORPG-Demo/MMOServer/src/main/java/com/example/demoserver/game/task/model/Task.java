@@ -13,7 +13,6 @@ import java.util.List;
 import java.util.Map;
 
 @Data
-@Slf4j
 public class Task {
 
 
@@ -23,13 +22,12 @@ public class Task {
     private String finishCondition;
     //JSON串
     private String reward;
-    private String taskDescription;
+    private String rewardDescription;
     private Integer level;
     private Integer type;
 
 
-    //任务完成条件改成一个JSON串
-    private FinishCondition finishConditionObject = new FinishCondition();
+    private FinishCondition finishConditionObject ;//= new FinishCondition();
 
 
     public FinishCondition getFinishConditionObject() {

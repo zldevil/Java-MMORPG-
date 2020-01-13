@@ -20,7 +20,6 @@ public enum EquitmentPart {
     PACKAGE(9, "背包"),
     ;
 
-
     private String part;
     private Integer code;
 

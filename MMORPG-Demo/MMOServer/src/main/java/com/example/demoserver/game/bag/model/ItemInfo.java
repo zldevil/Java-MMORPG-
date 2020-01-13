@@ -21,8 +21,7 @@ public class ItemInfo {
 
     private Integer location;
 
-    //物品触发效果
-    private Integer buff;
+    private String locationDescription;
 
     private Integer price;
 
@@ -31,7 +30,7 @@ public class ItemInfo {
      */
     private  String itemInfoProperty;
 
-    private String describe;
+    private String description;
 
     //武器耐久度
     private Long durable;
@@ -40,6 +39,10 @@ public class ItemInfo {
     private Integer repairPrice;
 
     private  Integer type;
+
+    //物品触发效果
+    private Integer buff;
+
 
     /** 物品属性 */
     private Map<Integer,RoleProperty> itemRoleProperty = new HashMap<>();

@@ -13,12 +13,14 @@ import com.example.demoserver.server.net.utils.SplitParameters;
 import com.example.demoserver.server.notify.Notify;
 import io.netty.channel.ChannelHandlerContext;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import java.text.MessageFormat;
 import java.util.List;
 
 
 @Controller
+@Component
 public class TaskController {
 
     @Autowired

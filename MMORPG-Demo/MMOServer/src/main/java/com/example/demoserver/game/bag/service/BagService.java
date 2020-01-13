@@ -95,14 +95,7 @@ public class BagService {
 
     }
 
-    /**
-     *  获取物品描述
-     * @param thingInfoId 物品id
-     */
-    public ItemInfo getThingInfo(Integer thingInfoId) {
-        return itemInfoCache.get(thingInfoId);
 
-    }
 
     /**
      *  获取物品描述
@@ -129,8 +122,8 @@ public class BagService {
 
         Item item = bag.getItemMap().get(itemId);
 
-        //BUFF的列代表是装备还是消耗品
-        if(item == null  || item.getItemInfo().getBuff() == null) {
+
+        if(item == null  || item.getItemInfo().getType().equals(ItemType.EQUIT_ITEM.getType())) {
             Notify.notifyByCtx(channelHandlerContext,"该物品不属于消耗品");
             return false;
         }
@@ -237,32 +230,7 @@ public class BagService {
                 }
 
             }
-            /*for (int locationIndex=1; locationIndex <= bag.getBagSize(); locationIndex++) {
 
-                //位置和ID相同不行吗
-                Item itemTmp = itemMap.get(locationIndex);
-                // 如果是用一种物品且堆叠未满
-                if (itemTmp != null && itemTmp.getItemInfo().getId().equals(item.getItemInfo().getId())) {
-                    itemTmp.setCount(itemTmp.getCount() + item.getCount());
-                    notify.notifyPlayer(player,
-                            MessageFormat.format("物品{0} x {1}  放入了你的背包\n",
-                                    item.getItemInfo().getName(),item.getCount()));
-                    return true;
-                }*/
-        /*    }
-        }*/
-
-            // 遍历背包所有格子，如果是空格，将物品放入格子
-      /*  for (int locationIndex=1; locationIndex <= bag.getBagSize(); locationIndex++) {
-            item.setLocationIndex(locationIndex);
-            if (null == bag.getItemMap().putIfAbsent(locationIndex,item)) {
-                notify.notifyPlayer(player,
-                        MessageFormat.format("物品{0} x {1}  放入了你的背包 \n",
-                                item.getItemInfo().getName(),item.getCount()));
-                return true;
-            }
-        }
-        return false;*/
 
         } else {
             if (itemMap.size() < Constant.packageSize) {
@@ -315,19 +283,19 @@ public class BagService {
 
         List<Bag> bagList = bagMapper.selectBagByPlayerId(player.getId());
 
-        bagList.forEach( tBag ->  {
+        bagList.forEach( bagTmp ->  {
 
-                Bag bag = new Bag(tBag.getPlayerId(),tBag.getBagSize());
+                Bag bag = new Bag(bagTmp.getPlayerId(),bagTmp.getBagSize());
 
-                if (!Strings.isNullOrEmpty(tBag.getItems())) {
-                    Map<Long,Item> itemMap =  JSON.parseObject(tBag.getItems(),
+                if (!Strings.isNullOrEmpty(bag.getItems())) {
+                    Map<Long,Item> itemMap =  JSON.parseObject(bagTmp.getItems(),
                             new TypeReference<Map<Long,Item>>(){});
                     bag.setItemMap(itemMap);
                 } else {
                     bag.setItemMap(new LinkedHashMap<>());
                 }
 
-                bag.setBagName(tBag.getBagName());
+                bag.setBagName(bagTmp.getBagName());
                 player.setBag(bag);
 
                 log.debug("bag {} ", bag );

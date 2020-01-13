@@ -1,10 +1,12 @@
 package com.example.demoserver.game.shop.service;
 
+import com.example.demoserver.game.bag.dao.ItemInfoCache;
 import com.example.demoserver.game.bag.model.Item;
 import com.example.demoserver.game.bag.model.ItemInfo;
 import com.example.demoserver.game.bag.service.BagService;
 import com.example.demoserver.game.player.model.Player;
 import com.example.demoserver.game.shop.cache.ShopCache;
+import com.example.demoserver.game.shop.model.GoodsOnSale;
 import com.example.demoserver.game.shop.model.Shop;
 import com.example.demoserver.server.notify.Notify;
 import com.google.common.base.Objects;
@@ -14,6 +16,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.text.MessageFormat;
+import java.util.List;
+import java.util.stream.Collector;
 
 @Service
 @Slf4j
@@ -28,11 +32,15 @@ public class ShopService {
     @Autowired
     private BagService bagService;
 
+    @Autowired
+    private ItemInfoCache itemInfoCache;
 
     public void buyGood(Player player,Integer shopId,Integer itemId,Integer num){
 
         Shop shop =  shopCache.getShop(shopId);
-        ItemInfo itemInfo = shop.getGoodsMap().get(itemId);
+        GoodsOnSale goodsOnSale =shop.getGoodsMap().get(itemId);
+
+        ItemInfo itemInfo = itemInfoCache.get(goodsOnSale.getItemId());
         if ( null == itemInfo){
             notify.notifyPlayer(player,"该商店没有此货物");
         }
@@ -62,9 +70,13 @@ public class ShopService {
 
     public  void showGoodsOnShop(Player player,Integer shopId){
         Shop shop =shopCache.getShop(shopId);
+
+        List<GoodsOnSale> goodsOnSaleList =(List<GoodsOnSale>) shop.getGoodsMap().values();
+
         StringBuilder stringBuilder=new StringBuilder();
         stringBuilder.append(" 商店中有: ");
-        shop.getGoodsOnSaleMap().values().forEach(itemInfo -> {
+        goodsOnSaleList.forEach(goodsOnSale -> {
+            ItemInfo itemInfo=itemInfoCache.get(goodsOnSale.getItemId());
             stringBuilder.append(MessageFormat.format("商品名称为:{0},id为{1}",itemInfo.getName(),itemInfo.getId()));
         });
 

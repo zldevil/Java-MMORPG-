@@ -22,7 +22,8 @@ public class Bag  {
     private String items;
 
 
-    JSONObject json = JSONObject.parseObject(items);
+
+    //JSONObject json = JSONObject.parseObject(items);
 
     Map<Long,Item> itemMap =new ConcurrentSkipListMap<>();
 
@@ -51,6 +52,9 @@ public class Bag  {
     }
 
 
+    public Bag(){
+
+    }
 
 
 

@@ -28,9 +28,13 @@ public class RolePropertyCache {
                 rolePropertyCache.put(roleProperty.getId(),roleProperty);
             });
 
+            log.info("角色属性资源加载完成");
+
         } catch (Exception e) {
             e.printStackTrace();
+            log.info("角色属性加载失败");
         }
+
 
     }
 

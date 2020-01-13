@@ -1,5 +1,7 @@
 package com.example.demoserver.game.shop.model;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.TypeReference;
 import com.example.demoserver.game.bag.dao.ItemInfoCache;
 import com.example.demoserver.game.bag.model.ItemInfo;
 import com.example.demoserver.game.bag.service.BagService;
@@ -7,17 +9,12 @@ import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 @Data
 public class Shop {
-
-    @Autowired
-    private BagService bagService;
-    @Autowired
-    private ItemInfoCache itemInfoCache;
-
 
 
     private Integer shopId;
@@ -27,17 +24,15 @@ public class Shop {
     private String goodsOnSale;
 
 
+    private Map<Integer, GoodsOnSale> goodsMap = new ConcurrentHashMap<>();
 
 
-    private Map<Integer, ItemInfo> goodsMap = new ConcurrentHashMap<>();
+    public Map<Integer,GoodsOnSale> getGoodsOnSaleMap(){
 
-
-    public Map<Integer,ItemInfo> getGoodsOnSaleMap(){
-        String[] itemInfoId = goodsOnSale.split(",");
-        for (String itemInfoTmpId:itemInfoId){
-           ItemInfo itemInfo= itemInfoCache.get(Integer.valueOf(itemInfoTmpId));
-           goodsMap.put(itemInfo.getId(),itemInfo);
-        }
+        List<GoodsOnSale> goodsOnSaleList = JSON.parseObject(goodsOnSale,new TypeReference<List<GoodsOnSale>>(){});
+        goodsOnSaleList.forEach(goodsOnSaleTmp ->{
+            goodsMap.put(goodsOnSaleTmp.getItemId(),goodsOnSaleTmp);
+        } );
         return goodsMap;
     }
 

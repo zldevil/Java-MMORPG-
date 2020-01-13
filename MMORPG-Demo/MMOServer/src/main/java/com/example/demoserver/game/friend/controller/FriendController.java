@@ -7,10 +7,12 @@ import com.example.demoserver.game.player.service.PlayerDataService;
 import com.example.demoserver.server.net.annoation.Controller;
 import com.example.demoserver.server.net.utils.SplitParameters;
 import io.netty.channel.ChannelHandlerContext;
+import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
 
 @Controller
+@Component
 public class FriendController {
 
     @Resource

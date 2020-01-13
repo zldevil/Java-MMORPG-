@@ -18,17 +18,21 @@ public class SkillsCache {
             notification -> log.debug(notification.getKey() + "物品被移除, 原因是" + notification.getCause())
     ).build();
 
+
     @PostConstruct
     public void init(){
-        List<Skill> skillList= null;
+
         try {
-            skillList = ExcelUtil.readExcel("static/skills.xlsx",new Skill());
+            List<Skill> skillList = ExcelUtil.readExcel("static/skills.xlsx",new Skill());
+            skillList.forEach(skill -> {
+                skillCache.put(skill.getId(),skill);
+            });
+            log.info("技能加载成功");
         } catch (Exception e) {
             e.printStackTrace();
+            log.info("技能加载失败");
         }
-        skillList.forEach(skill -> {
-            skillCache.put(skill.getId(),skill);
-        });
+
     }
 
     public  Skill get(Integer skillId){

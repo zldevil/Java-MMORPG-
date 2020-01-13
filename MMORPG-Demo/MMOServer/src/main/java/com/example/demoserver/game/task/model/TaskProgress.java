@@ -50,5 +50,8 @@ public class TaskProgress {
         return progressObject;
     }
 
+    public TaskProgress(){
+
+    }
 
 }

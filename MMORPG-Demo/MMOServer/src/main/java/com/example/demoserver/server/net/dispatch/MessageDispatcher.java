@@ -72,8 +72,6 @@ public class MessageDispatcher {
 
                                 log.info("初始化"+controller);
 
-                                //Object handler=  SpringUtil.getBean(controller);
-
                                 Object handler= BeanNameUtil.getBean(controller);
 
                                 Method[] methods = controller.getDeclaredMethods();

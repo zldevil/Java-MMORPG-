@@ -26,7 +26,6 @@ import java.util.Map;
 public class ExcelUtil {
 
 
-
     public static <T> List<T> readExcel(String excelpath, T t) throws Exception {
 
         ClassPathResource resource =new ClassPathResource(excelpath);
@@ -51,7 +50,6 @@ public class ExcelUtil {
                     //循环次数小于对象的元素个数且小于表格列数
                     for(int i = 0; i < fields.length && i<row.getLastCellNum(); ++i) {
 
-
                         Cell cell = row.getCell(i);
                         String fi = fields[i].getName();
                         String sname = "set" + fi.substring(0, 1).toUpperCase() + fi.substring(1);
@@ -60,11 +58,8 @@ public class ExcelUtil {
                         Method mt = obj.getClass().getMethod(sname, fields[i].getType());
                         //获取单元格的string类型的值
 
-                        //  String strCellVal=PramTypeJudgeUtil.getCellStringValue(cell);
                         //注入数据
                         Object object = getCellFormatValue(row.getCell(i),fields[i]);
-
-                        Class<?> f =fields[i].getType();
 
                         if(object==null||object.equals("")){
 
@@ -76,9 +71,7 @@ public class ExcelUtil {
                             Object objects=TypeUtil.returnCorrectType(object,fields[i]);
 
                             mt.invoke(obj, objects);
-
                         }
-
 
                     }
                     list.add((T) obj);
@@ -92,18 +85,18 @@ public class ExcelUtil {
 
     private  static Object getCellFormatValue(Cell cell,Field field) {
 
-        Object cellValue="" ;
+        Object cellValue=null ;
 
         if (cell != null) {
 
-            if(field.getName().equals("neighborScence")||field.getName().equals("scenceEntityId")){
+            if(field.getName().equals("neighborScence")||field.getName().equals("scenceEntityId")
+                    ||field.getName().equals("goodsOnSale")){
                 cell.setCellType(Cell.CELL_TYPE_STRING);
                 cellValue=cell.getStringCellValue();
             }
             else{
 
             // 判断当前Cell的Type
-            //logger.info("当前的类型cell.getCellType()"+cell.getCellType());
             switch (cell.getCellType()) {
                 case Cell.CELL_TYPE_NUMERIC: {
                     // 如果当前Cell的Type为NUMERIC
@@ -120,47 +113,13 @@ public class ExcelUtil {
                     break;
                 }
 
+                default:
+                    cellValue=null;
+                    break;
             }
         }
         }
         return cellValue;
     }
-
-
-
-    private String getCellValue(Cell cell){
-        if (null == cell){
-            return "";
-        }
-        if (cell.getCellType() == Cell.CELL_TYPE_STRING) {
-
-            return cell.getStringCellValue();
-
-        } else if (cell.getCellType() == Cell.CELL_TYPE_BOOLEAN) {
-
-            return String.valueOf(cell.getBooleanCellValue());
-
-        } else if (cell.getCellType() == Cell.CELL_TYPE_FORMULA) {
-
-            try {
-                return cell.getCellFormula();
-            } catch (Exception e) {
-                return String.valueOf(cell.getNumericCellValue());
-            }
-
-        } else if (cell.getCellType() == Cell.CELL_TYPE_NUMERIC) {
-
-            if(DateUtil.isCellDateFormatted(cell)){
-                SimpleDateFormat sdf = new SimpleDateFormat();
-                return sdf.format(cell.getDateCellValue());
-            }
-            return String.valueOf(cell.getNumericCellValue());
-
-        } else {
-            cell.setCellType(Cell.CELL_TYPE_STRING);
-            return cell.getStringCellValue();
-        }
-    }
-
 
 }

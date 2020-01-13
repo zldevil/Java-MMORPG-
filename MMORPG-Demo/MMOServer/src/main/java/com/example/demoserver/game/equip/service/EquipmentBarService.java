@@ -7,6 +7,7 @@ import com.example.demoserver.game.bag.model.Item;
 import com.example.demoserver.game.bag.model.ItemInfo;
 import com.example.demoserver.game.bag.model.ItemType;
 import com.example.demoserver.game.bag.service.BagService;
+import com.example.demoserver.game.equip.model.EquitmentPart;
 import com.example.demoserver.game.player.model.Player;
 import com.example.demoserver.game.roleproperty.service.RolePropertyService;
 import com.example.demoserver.server.notify.Notify;
@@ -15,7 +16,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.text.MessageFormat;
 import java.util.Map;
+import java.util.Objects;
 
 @Service
 @Slf4j
@@ -36,46 +39,46 @@ public class EquipmentBarService {
      * 穿上装备
      *
      * @param player 玩家
-     *               //* @param index 背包格子索引
+     *
      * @return 成功或失败
      */
 
-    public boolean wearEquip(Player player, Integer itemId) {
+    public boolean wearEquip(Player player, Long itemId) {
 
         Map<String, Item> equipmentBar = player.getEquipmentBar();
 
         Item item = player.getBag().getItemMap().get(itemId);
         if (null == item) {
+            notify.notifyPlayer(player,"背包中没有此装备");
             return false;
         }
         ItemInfo itemInfo = item.getItemInfo();
 
         // 判断是否是装备,装备的种类代号为
-        if (null == itemInfo || itemInfo.getType().equals(ItemType.EQUIT_ITEM.getType())) {
+        if (null == itemInfo || !itemInfo.getType().equals(ItemType.EQUIT_ITEM.getType())) {
             return false;
         }
 
         Item preItem = equipmentBar.get(itemInfo.getLocation());
         if (null != preItem) {
             // 如果原来这给部位有装备，移除原先装备的属性
-            rolePropertyService.loadThingPropertyToPlayer(player, preItem.getItemInfo());
+            removeEquip(player,preItem.getItemInfo().getLocationDescription());
+
         }
 
-        //ItemInfo equipment = bagsService.getItemInfo();
-
-        // 改变玩家属性
+        // 穿上装备，改变玩家属性
         rolePropertyService.loadThingPropertyToPlayer(player, itemInfo);
 
-        // 穿上装备
-        player.getEquipmentBar().put(itemInfo.getDescribe(), item);
+        // 放入玩家的装备栏中
+        player.getEquipmentBar().put(itemInfo.getLocationDescription(), item);
 
         // 从背包移除物品
-        //bagsService.removeItem(player,itemId);
+        bagsService.removeItem(player,itemId,1);
 
-        if (null != preItem) {
-            // 将原先的物品放入背包
-            bagsService.addItem(player, preItem);
-        }
+
+        // 将原先的物品放入背包
+        bagsService.addItem(player, preItem);
+
         return true;
     }
 
@@ -121,7 +124,6 @@ public class EquipmentBarService {
                     });
             log.debug("  equipmentBarString {}", equipmentBarString);
             log.debug("  equipmentBar{}", equipmentBarMap);
-            // 很重要，将从数据库还原的装备加载到角色
 
             player.setEquipmentBar(equipmentBarMap);
 
@@ -131,5 +133,34 @@ public class EquipmentBarService {
                             rolePropertyService.loadThingPropertyToPlayer(player, itemEquipment.getItemInfo()));
         }
 
+    }
+
+    public void showEquip(Player player){
+        if (Objects.isNull(player)) {
+            notify.notifyPlayer(player,"角色未登录");
+            return;
+        }
+
+        Map<String, Item> equipmentBar = player.getEquipmentBar();
+
+        if (equipmentBar.isEmpty()) {
+            notify.notifyPlayer(player,"您还没有装备");
+        }
+        StringBuilder sb = new StringBuilder();
+        equipmentBar.values().stream().
+                map(Item::getItemInfo).
+                forEach(
+                        itemInfo -> {
+                            String locationName= EquitmentPart.getPartByCode(itemInfo.getLocation());
+                            sb.append(MessageFormat.format(" {0} 上的装备为 {1} ",
+                                    locationName, itemInfo.getName())
+                            );
+
+                            sb.append("\n");
+                        }
+                );
+
+
+        notify.notifyPlayer(player,sb);
     }
 }
