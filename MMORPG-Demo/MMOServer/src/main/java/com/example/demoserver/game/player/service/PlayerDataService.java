@@ -9,25 +9,19 @@ import com.example.demoserver.game.friend.service.FriendService;
 import com.example.demoserver.game.player.manager.PlayerCacheMgr;
 import com.example.demoserver.game.player.model.Player;
 import com.example.demoserver.game.roleproperty.service.RolePropertyService;
-import com.example.demoserver.game.scence.servcie.GameSceneService;
+import com.example.demoserver.game.scene.servcie.GameSceneService;
 import com.example.demoserver.game.task.service.TaskService;
 import com.example.demoserver.server.notify.Notify;
 import com.example.demoserver.timejob.TimeTaskThreadManager;
-import com.google.common.base.Strings;
 
 import com.sun.xml.internal.bind.v2.TODO;
 import io.netty.channel.ChannelHandlerContext;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.annotation.Resource;
 import java.text.MessageFormat;
-import java.util.Map;
 import java.util.Objects;
-import java.util.Optional;
-
 
 
 @Service

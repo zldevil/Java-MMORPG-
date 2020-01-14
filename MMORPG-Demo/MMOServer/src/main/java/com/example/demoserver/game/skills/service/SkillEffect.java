@@ -3,7 +3,7 @@ package com.example.demoserver.game.skills.service;
 import com.example.demoserver.common.commons.Character;
 import com.example.demoserver.game.buff.model.Buff;
 import com.example.demoserver.game.buff.service.BuffService;
-import com.example.demoserver.game.scence.model.GameScene;
+import com.example.demoserver.game.scene.model.GameScene;
 import com.example.demoserver.game.skills.model.Skill;
 import com.example.demoserver.server.notify.Notify;
 
@@ -12,8 +12,6 @@ import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
 import java.text.MessageFormat;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Optional;
 
 /**

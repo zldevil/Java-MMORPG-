@@ -58,7 +58,7 @@ public class DemoClient {
         }
     }
 
-    private void loop() throws IOException {
+   /* private void loop() throws IOException {
         ClientFrame.InPutAndOutput.append("========== 连接服务器成功==========\n");
         while (true) {
             System.out.println("请输入您的操作：  操作 + 数据（多个数据之间用空格隔开） (或者请使用指令` show_cmd `查看指令说明)");
@@ -81,7 +81,7 @@ public class DemoClient {
             }
 
         }
-    }
+    }*/
 
 
     public  static void main(String[] args){

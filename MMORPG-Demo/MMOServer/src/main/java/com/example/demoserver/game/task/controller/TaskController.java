@@ -96,12 +96,13 @@ public class TaskController {
 
     }
 
+    @RequestMapping(getOrder = Orders.GIVEUPTASK)
     public void giveUpTask(ChannelHandlerContext ctx,Msg message){
 
         Player player=playerCacheMgr.getPlayerByCtx(ctx);
         String[] args =SplitParameters.split(message);
         Integer taskId=Integer.valueOf(args[1]);
-        taskService.giveUpTaask(player,taskId);
+        taskService.giveUpTask(player,taskId);
     }
 
 

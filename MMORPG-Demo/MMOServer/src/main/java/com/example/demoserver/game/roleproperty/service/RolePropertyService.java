@@ -119,7 +119,6 @@ public class RolePropertyService {
             //log.debug("rolePropertyMap {}",rolePropertyMap);
         }
 
-
         // 加载hp
         Optional.ofNullable(rolePropertyMap.get(1))
                 .ifPresent( roleProperty -> player.setHp((long)roleProperty.getPropertyValue()));

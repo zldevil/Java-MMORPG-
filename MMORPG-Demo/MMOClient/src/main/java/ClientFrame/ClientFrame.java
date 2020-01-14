@@ -18,7 +18,6 @@ public class ClientFrame extends JFrame {
     //一个类似CRT的连接框
     public static final JTextArea InPutAndOutput  = new JTextArea();
 
-
     public ClientFrame() {
         this.setLayout(null);
 
@@ -88,11 +87,10 @@ public class ClientFrame extends JFrame {
         //默认的设置是超过文本框才会显示滚动条，以下设置让滚动条一直显示
         displayBox.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
 
-
         this.setBounds((width - 700) / 2,(height - 600) / 2,700, 600);
         this.add(displayBox);
 
-        this.setSize(700, 600);
+       // this.setSize(700, 600);
         this.setVisible(true);
 
     }

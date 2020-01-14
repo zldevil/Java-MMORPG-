@@ -7,8 +7,8 @@ import com.example.demoserver.game.player.model.Player;
 import com.example.demoserver.game.player.service.PlayerDataService;
 import com.example.demoserver.game.player.service.PlayerLoginService;
 import com.example.demoserver.game.player.service.PlayerQuitService;
-import com.example.demoserver.game.scence.model.GameScene;
-import com.example.demoserver.game.scence.servcie.GameSceneService;
+import com.example.demoserver.game.scene.model.GameScene;
+import com.example.demoserver.game.scene.servcie.GameSceneService;
 import com.example.demoserver.game.user.model.User;
 import com.example.demoserver.game.user.service.UserService;
 import com.example.demoserver.server.net.annoation.Controller;
@@ -20,11 +20,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import javax.annotation.Resource;
-import java.text.MessageFormat;
 import java.util.List;
 import java.util.Objects;
-import java.util.Optional;
 
 
 @Component
@@ -76,9 +73,10 @@ public class PlayerController {
     @RequestMapping(getOrder = Orders.SELECTPLAYER)
     public void  playerLogin(ChannelHandlerContext ctx, Msg message) {
         String[] array = SplitParameters.split(message);
-        Integer playerId = Integer.valueOf(array[1]);
-        StringBuilder result = new StringBuilder();
 
+        Integer playerId = Integer.valueOf(array[1]);
+
+        StringBuilder result = new StringBuilder();
 
         //判断用户是否有此职业角色
         if (userService.isUserOnline(ctx) && playerLoginService.hasPlayerRole(ctx, playerId) ){

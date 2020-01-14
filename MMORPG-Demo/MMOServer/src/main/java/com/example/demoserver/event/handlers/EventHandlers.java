@@ -2,8 +2,7 @@ package com.example.demoserver.event.handlers;
 
 import com.example.demoserver.event.dispatch.EventManager;
 import com.example.demoserver.event.events.*;
-import com.example.demoserver.game.ScenceEntity.model.Monster;
-import com.example.demoserver.game.bag.model.Item;
+import com.example.demoserver.game.SceneEntity.model.Monster;
 import com.example.demoserver.game.player.manager.PlayerCacheMgr;
 import com.example.demoserver.game.player.model.Player;
 import com.example.demoserver.game.task.service.TaskService;
@@ -14,8 +13,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.text.MessageFormat;
-import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 
 @Slf4j

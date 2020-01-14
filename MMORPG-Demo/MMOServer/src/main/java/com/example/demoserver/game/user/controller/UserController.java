@@ -70,7 +70,7 @@ public class UserController  {
         });
 
         Notify.notifyByCtx(ctx,sb.toString());
-        Notify.notifyByCtx(ctx,"请使用`palyerlogin {id}` 的加载角色 ");
+        Notify.notifyByCtx(ctx,"请使用`showplayer {id}` 的加载角色 ");
 
     }
 

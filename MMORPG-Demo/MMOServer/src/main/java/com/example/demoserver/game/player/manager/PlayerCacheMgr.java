@@ -64,11 +64,10 @@ public class PlayerCacheMgr  {
     /**
      *  通过 channel Id 清除玩家信息
      */
-    //channelId是什么
+
     public void  removePlayerByChannelId(String channelId) {
         ctxPlayerCache.invalidate(channelId);
     }
-
 
     /**
      * 玩家id来保存ChannelHandlerContext

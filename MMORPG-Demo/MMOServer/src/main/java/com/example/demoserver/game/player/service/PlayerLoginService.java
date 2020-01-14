@@ -50,8 +50,7 @@ public class PlayerLoginService {
 
         Player playerCache  = playerCacheMgr.getPlayerByCtx(ctx);
 
-        // 清理当前通道的角色
-        playerQuitService.logoutScene(ctx);
+        //playerQuitService.logoutScene(ctx);
 
         // 如果角色缓存为空 或者 缓存中的角色不是要加载的角色，那就从数据库查询
         if (playerCache == null || !(playerCache.getId()==playerId)) {
@@ -59,15 +58,14 @@ public class PlayerLoginService {
             Player player = new Player();
             BeanUtils.copyProperties(userEntity,player);
 
-            // 玩家初始化
-            playerDataService.initPlayer(player);
-
-            //调用缓存，在登录时将上下文ctx与player加载到缓存中
+            //在登录时将上下文ctx与player加载到缓存中
             playerCacheMgr.putCtxPlayer(ctx,player);
-
 
             //在登录时将上下文id与ctx加载到缓存中
             playerCacheMgr.savePlayerCtx(playerId,ctx);
+
+            // 玩家初始化
+            playerDataService.initPlayer(player);
 
             player.setCtx(ctx);
 
@@ -75,10 +73,8 @@ public class PlayerLoginService {
 
         } else {
 
-
             playerCacheMgr.putCtxPlayer(ctx,playerCache);
 
-            // 保存playerId跟ChannelHandlerContext之间的关系
             playerCacheMgr.savePlayerCtx(playerId,ctx);
             // 玩家初始化
             playerDataService.initPlayer(playerCache);
@@ -96,17 +92,15 @@ public class PlayerLoginService {
      */
 
     public boolean hasPlayerRole(ChannelHandlerContext ctx, int playerId) {
+
         User user = UserCacheManger.getUserByCtx(ctx);
         List<UserEntity>  userEntityList = userService.findPlayers(user.getId());
-
 
         for(UserEntity userEntity:userEntityList){
             if(userEntity.getId().equals(playerId)){
                 return true;
             }
-
         }
-
         return  false;
     }
 

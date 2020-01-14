@@ -1,14 +1,14 @@
 package com.example.demoserver.server.notify;
 
-//import com.alibaba.fastjson;
+
 
 import com.example.demoserver.common.MsgEntity.Msg;
 import com.example.demoserver.common.commons.Character;
-import com.example.demoserver.game.ScenceEntity.model.Characters;
+
 import com.example.demoserver.game.player.manager.PlayerCacheMgr;
 import com.example.demoserver.game.player.model.Player;
-import com.example.demoserver.game.scence.model.GameScene;
-import com.example.demoserver.game.scence.servcie.GameSceneService;
+import com.example.demoserver.game.scene.model.GameScene;
+import com.example.demoserver.game.scene.servcie.GameSceneService;
 import io.netty.channel.ChannelHandlerContext;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -45,10 +45,13 @@ public class Notify {
         } else {
            // message.setContent(JSON.toJSONString(e));
         }
-        gameScene.getPlayers().keySet().forEach( playerId -> {
-            ChannelHandlerContext ctx = playerCacheMgr.getCxtByPlayerId(playerId);
-            ctx.writeAndFlush(message.toProto());
-        });
+        if(gameScene.getPlayers().keySet()!=null){
+            gameScene.getPlayers().keySet().forEach( playerId -> {
+                ChannelHandlerContext ctx = playerCacheMgr.getCxtByPlayerId(playerId);
+                ctx.writeAndFlush(message.toProto());
+            });
+        }
+
     }
 
     //通知场景中的其他玩家，该玩家死亡

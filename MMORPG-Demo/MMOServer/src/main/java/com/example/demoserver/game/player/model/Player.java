@@ -7,15 +7,13 @@ import com.example.demoserver.common.commons.Constant;
 import com.example.demoserver.event.dispatch.EventManager;
 import com.example.demoserver.event.events.LevelEvent;
 import com.example.demoserver.event.events.MoneyListenerEvent;
-import com.example.demoserver.game.ScenceEntity.model.Characters;
 import com.example.demoserver.game.bag.model.Bag;
 import com.example.demoserver.game.bag.model.Item;
 import com.example.demoserver.game.buff.model.Buff;
 import com.example.demoserver.game.friend.model.Friend;
 import com.example.demoserver.game.roleproperty.model.RoleProperty;
-import com.example.demoserver.game.scence.model.GameScene;
+import com.example.demoserver.game.scene.model.GameScene;
 import com.example.demoserver.game.skills.model.Skill;
-import com.example.demoserver.game.task.model.Task;
 import com.example.demoserver.game.task.model.TaskProgress;
 import io.netty.channel.ChannelHandlerContext;
 import lombok.Data;
@@ -84,14 +82,10 @@ public class Player extends UserEntity implements Character {
      */
     private  Map<Integer, TaskProgress> taskProgressMap =new ConcurrentHashMap<>();
 
-
     /**
      * 定义玩家所拥有的好友
      */
     private Map<Integer, Friend> friendMap = new HashMap<>();
-
-
-
 
     /**
      *  金币变化
@@ -101,7 +95,6 @@ public class Player extends UserEntity implements Character {
         this.setMoney(this.getMoney()+money);
         EventManager.publish(new MoneyListenerEvent(this,money));
     }
-
 
     /**
      *

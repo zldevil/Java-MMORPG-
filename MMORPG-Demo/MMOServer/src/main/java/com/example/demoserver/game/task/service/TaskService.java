@@ -179,9 +179,10 @@ public class TaskService {
         }
     }
 
-    public void giveUpTaask(Player player,Integer taskId){
+    public void giveUpTask(Player player,Integer taskId){
 
         removeTaskProgress(player,taskId);
+
     }
 
 
@@ -207,8 +208,8 @@ public class TaskService {
     }
 
     /**
-     *  创建或更新一个玩家任务进度记录
-     * @param progress 新创建的进度
+     *  保存任务进度
+     * @param progress
      */
     public  void saveOrUpdateProgress(TaskProgress progress) {
         threadPool.execute(() -> {
@@ -240,6 +241,7 @@ public class TaskService {
      * 新玩家初始化任务
      * @param initedPlayer
      */
+    //写在创建玩家的时候？
     public void getNewPlayerTask(Player initedPlayer) {
 
         addAcceptTask(initedPlayer, 1);
@@ -265,13 +267,15 @@ public class TaskService {
 
     }
 
+
     //检测任务进度
     public void checkTaskProgress(Player player, Character character){
         player.getTaskProgressMap().values().forEach(taskProgress -> {
            if(taskProgress.getProgressObject().getCondition().getTarget().equals(character.getId())){
                 taskProgress.getProgressObject().addProgressNum(1);
                 if(taskProgress.getProgressObject().finished){
-                    //通知任务完成
+                    notify.notifyPlayer(player,MessageFormat.format("{0}任务完成，可以结束该任务",
+                            taskProgress.getTask().getName()));
                 }
             }
         });

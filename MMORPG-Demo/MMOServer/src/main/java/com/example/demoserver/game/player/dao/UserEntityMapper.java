@@ -22,4 +22,6 @@ public interface UserEntityMapper {
     //通过name查找
     UserEntity selectPlayerByName(String name);
 
+    int updateUserEntity(UserEntity userEntity);
+
 }

@@ -3,6 +3,7 @@ package common;
 public enum  Orders {
 
 
+
     /**显示当前位置和可
      *
      以移动的地点*/
@@ -46,7 +47,7 @@ public enum  Orders {
     SHOW_EQUIPMENT_BAR("show_equ_bar",160,"展示装备栏"),
 
 
-    WEAREQUIP("equip",161,"穿上装备"),
+    WEAREQUIP("wearequip",161,"穿上装备"),
 
 
     USEITEM("useitem",162,"使用道具"),
@@ -67,9 +68,9 @@ public enum  Orders {
     ACCEPTTASK("accepttask",169,"接受任务"),
 
     FINISHTASK("finishtask",170,"完成任务"),
-    /**
-     *
-     */
+
+    GIVEUPTASK("giveuptask",171,"放弃任务"),
+
     ADDFRIEND("addfriend",180,"添加好友"),
 
     SHOWFRIENDLIST("showfriendlist",181,"显示好友列表"),
@@ -85,7 +86,7 @@ public enum  Orders {
 
     CREATEGUILD("createguild",210,"创建公会"),
 
-    JIONGUILD("jooinguild",211,"加入公会"),
+    JIONGUILD("joinguild",211,"加入公会"),
 
     LEAVEGUILD("leaveguild",212,"离开工会"),
 
@@ -153,4 +154,5 @@ public enum  Orders {
     public Integer getOrderId(){
         return orderId;
     }
+
 }

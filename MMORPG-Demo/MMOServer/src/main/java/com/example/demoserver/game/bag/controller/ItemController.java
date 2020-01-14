@@ -32,7 +32,7 @@ public class ItemController {
 
 
     @RequestMapping(getOrder = Orders.USEITEM)
-    private void useItem(ChannelHandlerContext ctx, Msg message) {
+    public void useItem(ChannelHandlerContext ctx, Msg message) {
 
         String[] command = SplitParameters.split(message);
 

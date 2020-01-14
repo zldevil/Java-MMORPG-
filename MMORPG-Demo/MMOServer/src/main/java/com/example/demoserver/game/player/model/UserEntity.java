@@ -62,8 +62,6 @@ public class UserEntity {
     private Integer positionInGuild;
 
 
-
-
     public Integer getExp() {
         return exp;
     }

@@ -29,6 +29,7 @@ public class FriendService {
     private RoleCache roleCache;
 
 
+
     public void addFriend(Player player,Integer targetPlayerId){
 
         Player targetPlayer =playerDataService.getPlayerById(targetPlayerId);
@@ -37,7 +38,7 @@ public class FriendService {
                     Friend friend = new Friend(
                             playerTmp .getId(),
                             playerTmp .getName(),
-                            RoleCache.getRole(playerTmp .getTypeId()).getRoleName(),
+                            RoleCache.getRole(playerTmp.getTypeId()).getRoleName(),
                             new Date()
                     );
                     player.getFriendMap()
@@ -49,6 +50,7 @@ public class FriendService {
         ).orElseGet(() ->  { notify.notifyPlayer(player,"添加的玩家不存在"); return null;});
 
     }
+
 
     public void listFriend(Player player){
         StringBuilder sb = new StringBuilder();
@@ -69,12 +71,13 @@ public class FriendService {
         notify.notifyPlayer(player,sb.toString());
     }
 
+
     public void initFriend(Player player) {
 
-        // 如果玩家好友列表为空，初始化玩家列表
+        // 如果玩家好友列表为空，初始化玩家列表，有问题吧，感觉不太对
         if (!Strings.isNullOrEmpty(player.getFriends()) && player.getFriendMap().isEmpty()) {
-            Map<Long, Friend> friendMap = JSON.parseObject(player.getFriends(),
-                    new TypeReference<Map<Long,Friend>>(){});
+            Map<Integer, Friend> friendMap = JSON.parseObject(player.getFriends(),
+                    new TypeReference<Map<Integer,Friend>>(){});
             friendMap.values().forEach(friend -> {
                 player.getFriendMap().put(friend.getPlayerId(),friend);
             });

@@ -38,7 +38,8 @@ public class BagController  {
 
     @RequestMapping(getOrder = Orders.PACKBAG)
     public void packBag(ChannelHandlerContext ctx, Msg message) {
-        bagService.packBag(ctx);
+        Player player=playerDataService.getPlayerByCtx(ctx);
+        bagService.packBag(player);
     }
 
 

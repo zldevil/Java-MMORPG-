@@ -53,10 +53,10 @@ public class BagService {
 
     /**
      *
-     * @param ctx
+     * @param player
      */
-    public void packBag(ChannelHandlerContext ctx){
-
+    public void packBag(Player player){
+        notify.notifyPlayer(player,"整理背包");
     }
 
     /**
@@ -278,7 +278,6 @@ public class BagService {
     /**
      *   从数据库加载背包
      */
-
     public void loadBag(Player player) {
 
         List<Bag> bagList = bagMapper.selectBagByPlayerId(player.getId());

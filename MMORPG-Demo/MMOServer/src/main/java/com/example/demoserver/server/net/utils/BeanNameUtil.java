@@ -1,6 +1,7 @@
 package com.example.demoserver.server.net.utils;
 
 public class BeanNameUtil {
+
     public static Object getBean(Class<?> controller) {
 
         String name = controller.getName();
@@ -9,13 +10,13 @@ public class BeanNameUtil {
             case "com.example.demoserver.game.player.controller.PlayerController":
                 resultBean = SpringUtil.getBean("playerController");
                 break;
-            case "com.example.demoserver.game.scence.controller.AOIController ":
-                resultBean = SpringUtil.getBean("aOIController");
+            case "com.example.demoserver.game.scene.controller.AoiController":
+                resultBean = SpringUtil.getBean("aoiController");
                 break;
-            case "com.example.demoserver.game.scence.controller.SceneController":
+            case "com.example.demoserver.game.scene.controller.SceneController":
                 resultBean = SpringUtil.getBean("sceneController");
                 break;
-            case "com.example.demoserver.game.ScenceEntity.controller.SceneObjectController":
+            case "com.example.demoserver.game.SceneEntity.controller.SceneObjectController":
                 resultBean = SpringUtil.getBean("sceneObjectController");
                 break;
             case "com.example.demoserver.game.user.controller.UserController":
@@ -30,7 +31,7 @@ public class BeanNameUtil {
             case "com.example.demoserver.game.chat.controller.ChatController":
                 resultBean=SpringUtil.getBean("chatController");
                 break;
-            case "com.example.demoserver.game.chat.controller.EquipmentController":
+            case "com.example.demoserver.game.equip.controller.EquipmentController":
                 resultBean=SpringUtil.getBean("equipmentController");
                 break;
             case "com.example.demoserver.game.friend.controller.FriendController":

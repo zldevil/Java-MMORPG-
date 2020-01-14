@@ -42,15 +42,15 @@ public class EquipmentController {
 
 
     @RequestMapping(getOrder = Orders.WEAREQUIP)
-    private void wearEquip(ChannelHandlerContext ctx, Msg message) {
+    public  void wearEquip(ChannelHandlerContext ctx, Msg message) {
         String[] command = SplitParameters.split(message);
         Long equipmentId = Long.valueOf(command[1]);
         Player player = playerDataService.getPlayer(ctx);
-        ItemInfo itemInfo = player.getBag().getItemMap().get(equipmentId).getItemInfo();
 
         boolean flag = equipmentBarService.wearEquip(player, equipmentId);
 
         if (flag) {
+            ItemInfo itemInfo = player.getBag().getItemMap().get(equipmentId).getItemInfo();
             Notify.notifyByCtx(ctx, MessageFormat.format("装备 {0}  成功",
                     itemInfo.getName()));
 
@@ -61,7 +61,7 @@ public class EquipmentController {
 
 
     @RequestMapping(getOrder = Orders.SHOW_EQUIPMENT_BAR)
-    private void showEquip(ChannelHandlerContext ctx, Msg message) {
+    public void showEquip(ChannelHandlerContext ctx, Msg message) {
         Player player = playerDataService.getPlayerByCtx(ctx);
 
         equipmentBarService.showEquip(player);
@@ -69,7 +69,7 @@ public class EquipmentController {
     }
 
     @RequestMapping(getOrder = Orders.REMOVE_EQUIP)
-    private void removeEquip(ChannelHandlerContext ctx, Msg message) {
+    public void removeEquip(ChannelHandlerContext ctx, Msg message) {
         String[] params= SplitParameters.split(message);
         // 需要卸下装备的部位
         String part = params[1];
