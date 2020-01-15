@@ -5,6 +5,7 @@ import com.example.demoserver.game.player.dao.UserEntityMapper;
 import com.example.demoserver.game.player.manager.PlayerCacheMgr;
 import com.example.demoserver.game.player.model.Player;
 import com.example.demoserver.game.player.model.UserEntity;
+import com.example.demoserver.game.task.service.TaskService;
 import com.example.demoserver.game.user.manager.UserCacheManger;
 import com.example.demoserver.game.user.model.User;
 import com.example.demoserver.game.user.service.UserService;
@@ -38,7 +39,7 @@ public class PlayerLoginService {
     private UserService userService;
 
     @Autowired
-    private PlayerQuitService playerQuitService;
+    private TaskService taskService;
 
     @Autowired
     private UserEntityMapper userEntityMapper;
@@ -50,8 +51,6 @@ public class PlayerLoginService {
 
         Player playerCache  = playerCacheMgr.getPlayerByCtx(ctx);
 
-        //playerQuitService.logoutScene(ctx);
-
         // 如果角色缓存为空 或者 缓存中的角色不是要加载的角色，那就从数据库查询
         if (playerCache == null || !(playerCache.getId()==playerId)) {
             UserEntity userEntity=  userEntityMapper.selectUserEntityById(playerId);
@@ -61,7 +60,7 @@ public class PlayerLoginService {
             //在登录时将上下文ctx与player加载到缓存中
             playerCacheMgr.putCtxPlayer(ctx,player);
 
-            //在登录时将上下文id与ctx加载到缓存中
+            //在登录时将d与ctx加载到缓存中
             playerCacheMgr.savePlayerCtx(playerId,ctx);
 
             // 玩家初始化
@@ -90,7 +89,6 @@ public class PlayerLoginService {
      * @param playerId  要判定的角色id
      * @return 用户是否拥有此角色
      */
-
     public boolean hasPlayerRole(ChannelHandlerContext ctx, int playerId) {
 
         User user = UserCacheManger.getUserByCtx(ctx);
@@ -122,7 +120,10 @@ public class PlayerLoginService {
         player.setState(1);
         //设置初始时的场景ID
         player.setSenceId(1);
+        player.setMoney(100);
 
+        /**  创建角色时初始化任务 **/
+        //taskService.getNewPlayerTask((Player) player);
         try {
             userEntityMapper.insertUserEntity(player);
         } catch( DuplicateKeyException e) {

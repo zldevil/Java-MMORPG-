@@ -49,5 +49,6 @@ public interface Constant {
     Integer packageSize=16;
     Long MAXMP=600L;
     Long MAXHP=600L;
+    Long consumeDuration=3L;
 
 }

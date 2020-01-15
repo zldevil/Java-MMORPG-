@@ -32,9 +32,6 @@ public class BagController  {
     @Autowired
     private PlayerDataService playerDataService;
 
-    @Autowired
-    private Notify notificationManager;
-
 
     @RequestMapping(getOrder = Orders.PACKBAG)
     public void packBag(ChannelHandlerContext ctx, Msg message) {

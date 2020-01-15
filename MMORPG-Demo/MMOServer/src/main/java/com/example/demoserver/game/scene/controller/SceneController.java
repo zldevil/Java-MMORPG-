@@ -47,8 +47,6 @@ public class SceneController  {
         String[] array = message.getContent().split("\\s+");
         int willMoveSceneId =  Integer.valueOf(array[1]);
 
-
-
         GameScene gameScene = SceneCacheMgr.getScene(willMoveSceneId);
 
         StringBuilder sb = new StringBuilder();

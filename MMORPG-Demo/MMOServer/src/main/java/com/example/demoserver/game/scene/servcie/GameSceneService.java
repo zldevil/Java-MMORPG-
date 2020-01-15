@@ -35,10 +35,8 @@ public class GameSceneService {
      * @return
      */
 
-    //编译期生成get方法
     public GameScene getSceneByPlayer(Player player) {
 
-        //作用
         player.setSenceId(player.getCurrentScene().getId());
 
         return player.getCurrentScene();
@@ -77,7 +75,6 @@ public class GameSceneService {
      * @param ctx 通道上下文
      * @return 该通道当前的场景
      */
-    //上下文中查找场景，先从上下文中找到用户，然后通过用户的变量找到场景
     public GameScene getSceneByCtx(ChannelHandlerContext ctx) {
         Player player = playerDataService.getPlayer(ctx);
         return getSceneByPlayer(player);

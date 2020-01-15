@@ -3,7 +3,9 @@ package com.example.demoserver.server.netty;
 
 import com.example.demoserver.common.MsgEntity.Msg;
 import com.example.demoserver.common.proto.MsgProto;
+import com.example.demoserver.game.bag.service.BagService;
 import com.example.demoserver.game.player.manager.PlayerCacheMgr;
+import com.example.demoserver.game.player.model.Player;
 import com.example.demoserver.game.player.service.PlayerQuitService;
 import com.example.demoserver.server.net.dispatch.MessageDispatcher;
 import com.example.demoserver.server.notify.Notify;
@@ -28,6 +30,9 @@ public class NettyServerHandler extends ChannelInboundHandlerAdapter {
 
     @Autowired
     private PlayerCacheMgr playerCacheMgr;
+
+    @Autowired
+    private BagService bagService;
 
     @Override
     //主要业务逻辑
@@ -67,10 +72,13 @@ public class NettyServerHandler extends ChannelInboundHandlerAdapter {
     //断开连接时执行此方法
     public void channelInactive(ChannelHandlerContext ctx){
 
+        Player player=playerCacheMgr.getPlayerByCtx(ctx);
+
         ctx.writeAndFlush("正在断开连接");
 
         // 将角色信息保存到数据库
-        playerQuitService.savePlayer(playerCacheMgr.getPlayerByCtx(ctx));
+        playerQuitService.savePlayer(player);
+       // bagService.saveBag(player);
 
         // 清除缓存
         playerQuitService.cleanPlayerCache(ctx);

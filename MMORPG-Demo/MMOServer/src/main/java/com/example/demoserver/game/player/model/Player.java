@@ -40,6 +40,7 @@ import java.util.concurrent.ConcurrentHashMap;
 public class Player extends UserEntity implements Character {
 
 
+
     /** 当前通道上下文 **/
     private ChannelHandlerContext ctx;
 
@@ -120,12 +121,12 @@ public class Player extends UserEntity implements Character {
 
     @Override
     public Map<Integer, Skill> getHasUseSkillMap() {
-        return null;
+        return skillMap;
     }
 
     @Override
     public void setHasUseSkillMap(Map<Integer, Skill> skillMap) {
-
+            this.skillMap=skillMap;
     }
 
     @Override

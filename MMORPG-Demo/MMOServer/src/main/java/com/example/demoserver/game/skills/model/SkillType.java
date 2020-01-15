@@ -5,10 +5,10 @@ public enum SkillType {
 
 
     /** 对自身或友方使用 */
-    FRIENDLY(1),
+    FRIENDLY(2),
 
     /** 对敌人单人使用 **/
-    ATTACK_SINGLE(2),
+    ATTACK_SINGLE(1),
 
     /** 多人技能 **/
     ATTACK_MULTI(3),

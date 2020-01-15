@@ -24,7 +24,11 @@
 
     <update id="updateByPrimaryKeySelective" >
         update bag
-        set (playerId=#{playerId},bagName=#{bagName},bagSize=#{bagSize},items=#{items})
+        set
+        (playerId=#{playerId},
+        bagName=#{bagName},
+        bagSize=#{bagSize},
+        tems=#{items})
         where playerId=#{playerId}
     </update>
 

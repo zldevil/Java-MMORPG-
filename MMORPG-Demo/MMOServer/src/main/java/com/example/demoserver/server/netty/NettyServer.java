@@ -61,7 +61,7 @@ public class NettyServer {
 
     @PostConstruct
     public void start(){
-        int port =8888;
+        int port =9999;
         try {
             new NettyServer().bind(port);
         } catch (Exception e) {

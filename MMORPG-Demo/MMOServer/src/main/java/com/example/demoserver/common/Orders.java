@@ -59,7 +59,7 @@ public enum  Orders {
     USESKILLS("useskills",164,"使用技能"),
 
 
-    ATTACKMONSTER("attackmonster",165,"攻击怪物"),
+    ATTACKMONSTER("useskillattackmonster",165,"攻击怪物"),
 
     SHOWTASK("showtask",167,"展示所有的任务"),
 

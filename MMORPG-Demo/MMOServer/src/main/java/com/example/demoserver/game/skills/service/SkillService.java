@@ -66,34 +66,37 @@ public class SkillService {
 
         GameScene gameScene = gameSceneService.getSceneByPlayer(player);
 
-        if(System.currentTimeMillis()-player.getHasUseSkillMap().get(skillId).getUseSkillTime()>player.getHasUseSkillMap().get(skillId).getCd()){
+        if(player.getHasUseSkillMap()!=null&&player.getHasUseSkillMap().get(skillId)!=null){
+            if(System.currentTimeMillis()-player.getHasUseSkillMap().get(skillId).getUseSkillTime()<player.getHasUseSkillMap().get(skillId).getCd()){
 
-            notify.notifyPlayer(player,"技能冷却中");
-            return ;
+                notify.notifyPlayer(player,"技能冷却中");
+                return ;
+            }
         }
 
         //不只是武器拥有耐久度，在使用技能时所有装备均消耗耐久度
         player.getEquipmentBar().values().forEach(item -> {
-            if(item.getDurable()-3<0){
-                notify.notifyPlayer(player,MessageFormat.format("{0}的耐久度不足",item.getItemInfo().getName()));
+            if(item.getDurable()-Constant.consumeDuration<0){
+                notify.notifyPlayer(player,MessageFormat.format("{0}的耐久度不足,请修理该武器",item.getItemInfo().getName()));
             }
         });
 
-        if (!skill.getType().equals(SkillType.ATTACK_MULTI.getTypeId())) {
-            notify.notifyPlayer(player,"该技能不能对多个目标使用");
-
-        }
-
         //PVE,玩家对战环境中怪物等
         if (targetIdList.size() >1) {
-            targetIdList.forEach(
-                    targetId -> skillPVE(player,targetId,gameScene,skill)
-            );
+
+            if (!skill.getType().equals(SkillType.ATTACK_MULTI.getTypeId())) {
+                notify.notifyPlayer(player,"该技能不能对多个目标使用");
+                return ;
+            }else {
+                targetIdList.forEach(
+                        targetId -> skillPVE(player,targetId,gameScene,skill)
+                );
+            }
+
         } else {
             skillPVE(player,targetIdList.get(0),gameScene,skill);
         }
     }
-
 
     /**
      *  PVE
@@ -113,15 +116,12 @@ public class SkillService {
         }
 
         player.setTarget(target);
+
         // 使用技能
         if (useSkill(player,target,gameScene,skill)) {
 
             //瞬发技能
             monsterService.monsterBeAttack(player,target);
-            notify.notifyScene(gameScene,
-                    MessageFormat.format("{0} 受到 {1} 的技能 {2} 攻击，hp减少{3},当前hp为 {4} \n"
-                            ,target.getName(),player.getName(),skill.getName(),skill.getHarmValue(), target.getHp()));
-
 
         }else {
             notify.notifyPlayer(player,"使用技能攻击怪物失败，可能因为MP不足");
@@ -139,8 +139,8 @@ public class SkillService {
     public boolean useSkill(Character character,Character target,GameScene gameScene,Skill skill){
 
         if(character.getMp()>=skill.getConsumeMp()) {
-            log.debug("开始使用技能");
-            //瞬发技能，
+
+            //瞬发技能
             notify.notifyScene(gameScene,
                     MessageFormat.format(" {0}  对 {1} 使用了技能  {2} ",
                             character.getName(), target.getName(), skill.getName()));
@@ -151,7 +151,7 @@ public class SkillService {
 
                 Player player=(Player)character;
 
-                finalSkillHarmValue=computeFinalHarmValue((List<RoleProperty>) player.getRolePropertyMap().values(),skill);
+                finalSkillHarmValue=computeFinalHarmValue( player.getRolePropertyMap(),skill);
 
             } else {
                 finalSkillHarmValue=skill.getHarmValue();
@@ -160,11 +160,20 @@ public class SkillService {
 
                 // 怪物死亡,通知场景玩家;
                 notify.notifyScene(gameScene, MessageFormat.format("{0} 被 {1} 杀死", target.getName(), character.getName()));
+                target.setHp(0L);
             }
 
-            target.setHp(target.getHp() - skill.getHarmValue());
+            target.setHp(target.getHp() - finalSkillHarmValue);
 
-            if (skill.getBuff().equals(0)) {
+            /**
+             * 玩家能看到怪物状态，所以通知所有玩家
+             */
+            notify.notifyScene(gameScene,
+                    MessageFormat.format("{0} 受到 {1} 的技能 {2} 攻击，hp减少{3},当前hp为 {4} \n"
+                            ,target.getName(),character.getName(),skill.getName(),finalSkillHarmValue, target.getHp()));
+
+
+            if (!skill.getBuff().equals(0)) {
 
                 Buff buff = buffService.getBuff(skill.getBuff());
 
@@ -177,17 +186,8 @@ public class SkillService {
             }
 
             /**
-             * 玩家能看到怪物状态，所以通知所有玩家
-             */
-            notify.notifyScene(gameScene, MessageFormat.format("怪物 {0}受到技能攻击，减少了 {1} HP,怪物当前HP为{2}",
-                    target.getName(), skill.getHarmValue(), target.getHp()));
-
-            // skillEffect.castSkill(skill.getType(),character,target,gameScene,skill);
-
-            /**
              * 技能存在冷却
              */
-
             startSkillCd(character, skill);
 
             return true;
@@ -221,13 +221,10 @@ public class SkillService {
     //已经使用的技能放进一个MAP表中
     public void startSkillCd(Character character, Skill skill) {
 
-        Skill playerSkill = new Skill();
-        BeanUtils.copyProperties(skill,playerSkill);
-
         character.getHasUseSkillMap().put(skill.getId(),skill);
 
         // 技能cd结束后，移出活物cd状态
-        playerSkill.setUseSkillTime(System.currentTimeMillis());
+        skill.setUseSkillTime(System.currentTimeMillis());
 
         try {
             TimeTaskThreadManager.threadPoolSchedule(skill.getCd(), () ->character.getHasUseSkillMap().remove(skill.getId()) );
@@ -239,18 +236,19 @@ public class SkillService {
 
     /**
      * 计算伤害
-     * @param propertyList
+     * @param propertyMap
      * @param skill
      * @return
      */
-    public Long computeFinalHarmValue( List<RoleProperty> propertyList,Skill skill){
+    public Long computeFinalHarmValue( Map<Integer,RoleProperty> propertyMap,Skill skill){
+
 
         //生成一个属性名-属性数值的map
-        Map<String,Long> map=propertyList.stream().collect(
+        Map<String,Long> map=propertyMap.values().stream().collect(
                 Collectors.toMap(RoleProperty::getPropertyName,RoleProperty::getPropertyValue)
         );
 
-        Long finalValue=(long)(map.get("攻击力")+map.get("力量")*10*skill.getSkillDamagePercent());
+        Long finalValue=(long)(skill.getHarmValue()+(map.get("攻击力")+map.get("力量")*10)*skill.getSkillDamagePercent());
         return finalValue;
     }
     

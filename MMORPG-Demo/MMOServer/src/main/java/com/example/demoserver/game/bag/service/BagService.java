@@ -122,7 +122,6 @@ public class BagService {
 
         Item item = bag.getItemMap().get(itemId);
 
-
         if(item == null  || item.getItemInfo().getType().equals(ItemType.EQUIT_ITEM.getType())) {
             Notify.notifyByCtx(channelHandlerContext,"该物品不属于消耗品");
             return false;
@@ -318,11 +317,11 @@ public class BagService {
 
         if (bagMapper.updateByPrimaryKeySelective(saveBag) > 0) {
 
-            log.debug("更新背包成功 {}",saveBag);
+            log.info("更新背包成功 {}",saveBag);
 
         } else {
             bagMapper.insertBag(saveBag);
-            log.debug("保存背包成功 {}",saveBag);
+            log.info("保存背包成功 {}",saveBag);
         }
     }
 

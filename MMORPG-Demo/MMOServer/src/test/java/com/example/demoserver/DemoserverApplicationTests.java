@@ -1,6 +1,7 @@
 package com.example.demoserver;
 
 import com.example.demoserver.game.player.dao.UserEntityMapper;
+import com.example.demoserver.game.player.model.UserEntity;
 import com.example.demoserver.game.task.cache.TaskCache;
 import com.example.demoserver.game.user.dao.UserMapper;
 import com.example.demoserver.server.net.utils.SpringUtil;
@@ -40,7 +41,12 @@ class DemoserverApplicationTests {
         connection.close();
     }
 
+    @Test
+    void userEntityMapperTest(){
+        UserEntity userEntity=userEntityMapper.selectUserEntityById(109);
+        userEntity.setSenceId(4);
+        System.out.println(userEntityMapper.updateUserEntity(userEntity));
 
-
+    }
 
 }

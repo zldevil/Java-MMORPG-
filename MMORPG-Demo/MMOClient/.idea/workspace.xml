@@ -38,7 +38,7 @@
     </option>
   </component>
   <component name="RunManager">
-    <configuration name="DemoClient" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+    <configuration name="DemoClient" type="Application" factoryName="Application" singleton="false" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="client.DemoClient" />
       <module name="democlient" />
       <extension name="coverage">
@@ -74,7 +74,8 @@
       <workItem from="1578102210387" duration="12000" />
       <workItem from="1578102408788" duration="10484000" />
       <workItem from="1578898430924" duration="914000" />
-      <workItem from="1578902834916" duration="19984000" />
+      <workItem from="1578902834916" duration="28859000" />
+      <workItem from="1579007681564" duration="8679000" />
     </task>
     <servers />
   </component>

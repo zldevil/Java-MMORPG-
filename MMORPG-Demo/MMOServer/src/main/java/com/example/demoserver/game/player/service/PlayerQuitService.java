@@ -2,6 +2,7 @@ package com.example.demoserver.game.player.service;
 
 
 
+import com.example.demoserver.game.bag.service.BagService;
 import com.example.demoserver.game.player.dao.UserEntityMapper;
 import com.example.demoserver.game.player.manager.PlayerCacheMgr;
 import com.example.demoserver.game.player.model.Player;
@@ -26,10 +27,8 @@ import java.util.Optional;
 public class PlayerQuitService  {
 
 
-
     @Autowired
     private PlayerCacheMgr playerCacheMgr;
-
 
     @Autowired
     private Notify notify;
@@ -44,16 +43,22 @@ public class PlayerQuitService  {
     @Autowired
     private UserEntityMapper userEntityMapper;
 
+    @Autowired
+    private BagService bagService;
+
     /**
      *  主动注销当前角色
      */
     public void logout(ChannelHandlerContext ctx) {
+
         Player player =playerDataService.getPlayerByCtx(ctx);
 
         savePlayer(player);
 
+       // bagService.saveBag(player);
+
         // 从场景退出
-        logoutScene(ctx);
+        logoutScene(player);
 
         // 主动退出游戏的清除其缓存
         cleanPlayerCache(ctx);
@@ -64,17 +69,17 @@ public class PlayerQuitService  {
      *  退出场景
      */
 
-    public void logoutScene(ChannelHandlerContext ctx) {
-        Player player = playerDataService.getPlayerByCtx(ctx);
+    public void logoutScene(Player player) {
+
 
         Optional.ofNullable(player).ifPresent(
                 p -> {
-                    GameScene gameScene = gameSceneService.getSceneByCtx(ctx);
+                    GameScene gameScene = player.getCurrentScene();
 
                     notify.notifyScene(gameScene,
                             MessageFormat.format("玩家 {0} 正在退出", player.getName()));
 
-                    // 重点，从场景中移除
+                    //从场景中移除
                     gameScene.getPlayers().remove(player.getId());
                 }
         );
@@ -85,7 +90,6 @@ public class PlayerQuitService  {
     /**
      *  清除与角色相关的缓存
      */
-
     public void cleanPlayerCache(ChannelHandlerContext ctx) {
         String channelId = ctx.channel().id().asLongText();
 
@@ -109,7 +113,7 @@ public class PlayerQuitService  {
             // 持久化角色信息
             UserEntity userEntity = new UserEntity();
             BeanUtils.copyProperties(player, userEntity);
-            userEntityMapper.updateUserEntity(userEntity);
+            int num=userEntityMapper.updateUserEntity(userEntity);
 
             log.info("角色信息已保存");
         }

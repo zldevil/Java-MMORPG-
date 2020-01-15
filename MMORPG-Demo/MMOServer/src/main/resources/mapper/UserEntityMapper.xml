@@ -2,13 +2,18 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.example.demoserver.game.player.dao.UserEntityMapper">
     <resultMap id="BaseResultMap" type="com.example.demoserver.game.player.model.UserEntity" >
-        <id column="Id" property="id" jdbcType="INTEGER" />
+        <id column="id" property="Id" jdbcType="INTEGER" />
         <result column="name" property="name" jdbcType="VARCHAR" />
         <result column="state" property="state" jdbcType="INTEGER" />
         <result column="sceneId" property="senceId" jdbcType="INTEGER" />
         <result column="userId" property="userId" jdbcType="INTEGER" />
         <result column="typeId" property="typeId" javaType="INTEGER"/>
-
+        <result column="exp" property="exp" jdbcType="INTEGER"/>
+        <result column="equipments" property="equipments" jdbcType="VARCHAR"/>
+        <result column="friends" property="friends" jdbcType="VARCHAR"/>
+        <result column="money" property="money" jdbcType="INTEGER"/>
+        <result column="guildId" property="guildId" jdbcType="INTEGER"/>
+        <result column="positionInGuild" property="positionInGuild" jdbcType="INTEGER"/>
     </resultMap>
 
     <select id="selectUserEntityById" resultMap="BaseResultMap">
@@ -24,10 +29,28 @@
     </select>
 
     <insert id="insertUserEntity">
+
         insert into userentity(Id,name,userId,typeId,sceneId,state)
         values(
         #{Id},#{name},#{userId},#{typeId},#{senceId},#{state}
         )
     </insert>
+
+    <update id="updateUserEntity">
+        update userentity
+        set
+        userId = #{userId},
+        typeId = #{typeId},
+        state = #{state},
+        sceneId = #{senceId},
+        exp = #{exp},
+        equipments = #{equipments},
+        friends = #{friends},
+        money = #{money},
+        guildId = #{guildId},
+        positionInGuild = #{positionInGuild}
+
+        where id=#{Id} AND name=#{name}
+    </update>
 
 </mapper>

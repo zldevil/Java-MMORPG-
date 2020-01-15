@@ -57,12 +57,22 @@ public class MonsterService {
 */
         if (Objects.nonNull(player)) {
             // 如果怪物死亡
-            if (gameObjectService.sceneObjectAfterDead(monster)) {
+            if(monster.getHp()<=0){
+                if (gameObjectService.sceneObjectAfterDead(monster)) {
+                    // 结算掉落，这里暂时直接放到背包里
+                    monsterDropsService.dropItem(player, monster);
+                    // 怪物死亡的事件
+                    EventManager.publish(new MonsterDeadEvent(player, monster));
+                }
+            }
+
+
+           /* if (gameObjectService.sceneObjectAfterDead(monster)) {
                 // 结算掉落，这里暂时直接放到背包里
                 monsterDropsService.dropItem(player, monster);
                 // 怪物死亡的事件
                 EventManager.publish(new MonsterDeadEvent(player, monster));
-            }
+            }*/
         }
     }
 }

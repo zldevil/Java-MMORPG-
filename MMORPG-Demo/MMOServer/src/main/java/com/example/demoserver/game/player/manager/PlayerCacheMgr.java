@@ -47,13 +47,12 @@ public class PlayerCacheMgr  {
 
         ChannelHandlerContext old = getCxtByPlayerId(player.getId());
         Optional.ofNullable(old).ifPresent(o -> {
-                    ctxPlayerCache.invalidate(o);
 
                     if (old.equals(ctx)) {
 
-                           Notify.notifyByCtx(old,"角色在其他敌方登陆，你已不能进行正常角色操作，除非重新登陆用户加载角色");
-
+                           Notify.notifyByCtx(old,"登录其他角色，不能操作当前角色，除非重新登录加载 ");
                     }
+            ctxPlayerCache.invalidate(o);
                 }
         );
 
