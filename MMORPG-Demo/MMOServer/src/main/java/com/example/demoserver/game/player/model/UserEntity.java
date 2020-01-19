@@ -61,6 +61,8 @@ public class UserEntity {
     /** 代表玩家在公会中的职位**/
     private Integer positionInGuild;
 
+    //代表玩家所处的副本，默认为0，即不处于副本中
+    private Integer gameCopyId=0;
 
     public Integer getExp() {
         return exp;

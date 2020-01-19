@@ -2,7 +2,7 @@ package com.example.demoserver.game.scene.servcie;
 
 import com.example.demoserver.game.player.model.Player;
 import com.example.demoserver.game.player.service.PlayerDataService;
-import com.example.demoserver.game.scene.manager.SceneCacheMgr;
+import com.example.demoserver.game.scene.manager.SceneCache;
 import com.example.demoserver.game.scene.model.GameScene;
 
 import com.example.demoserver.server.notify.Notify;
@@ -53,7 +53,7 @@ public class GameSceneService {
         String[] stringIds = sceneIds.split(",");
         Arrays.stream(stringIds).forEach((stringId) -> {
             Integer id = Integer.valueOf(stringId);
-            GameScene gameScene = SceneCacheMgr.getScene(id);
+            GameScene gameScene = SceneCache.getScene(id);
             gameSceneList.add(gameScene);
         });
         return gameSceneList;
@@ -92,7 +92,7 @@ public class GameSceneService {
         gameScene.getPlayers().remove(player.getId());
 
         player.setSenceId(sceneId);
-        GameScene targetScene = SceneCacheMgr.getScene(sceneId);
+        GameScene targetScene = SceneCache.getScene(sceneId);
         // 放入目的场景
         targetScene.getPlayers().put(player.getId(), player);
         player.setCurrentScene(targetScene);
@@ -108,11 +108,11 @@ public class GameSceneService {
 
     public void initPlayerScene(Player player) {
 
-        GameScene scene = SceneCacheMgr.getScene(player.getSenceId());
+        GameScene scene = SceneCache.getScene(player.getSenceId());
 
         if (Objects.isNull(scene)) {
 
-            scene = SceneCacheMgr.getScene(1);
+            scene = SceneCache.getScene(1);
         }
 
         scene.getPlayers().put(player.getId(),player);

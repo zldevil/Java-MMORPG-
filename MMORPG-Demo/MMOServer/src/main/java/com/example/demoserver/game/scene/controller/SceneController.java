@@ -5,7 +5,7 @@ import com.example.demoserver.common.Orders;
 import com.example.demoserver.game.player.model.Player;
 import com.example.demoserver.game.player.service.PlayerDataService;
 
-import com.example.demoserver.game.scene.manager.SceneCacheMgr;
+import com.example.demoserver.game.scene.manager.SceneCache;
 import com.example.demoserver.game.scene.model.GameScene;
 import com.example.demoserver.game.scene.servcie.GameSceneService;
 import com.example.demoserver.server.net.annoation.Controller;
@@ -47,7 +47,7 @@ public class SceneController  {
         String[] array = message.getContent().split("\\s+");
         int willMoveSceneId =  Integer.valueOf(array[1]);
 
-        GameScene gameScene = SceneCacheMgr.getScene(willMoveSceneId);
+        GameScene gameScene = SceneCache.getScene(willMoveSceneId);
 
         StringBuilder sb = new StringBuilder();
 

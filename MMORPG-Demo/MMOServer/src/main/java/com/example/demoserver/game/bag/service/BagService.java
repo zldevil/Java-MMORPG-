@@ -166,6 +166,7 @@ public class BagService {
      */
 
     public boolean removeItem(Player player, Long itemId, Integer count) {
+
         Bag bag = player.getBag();
         Map<Long, Item> itemMap = bag.getItemMap();
         if(!itemMap.isEmpty()) {

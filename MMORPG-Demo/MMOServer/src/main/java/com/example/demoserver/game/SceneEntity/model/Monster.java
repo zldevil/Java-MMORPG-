@@ -23,13 +23,10 @@ import java.util.Map;
 public class Monster extends ScenceEntity  implements Character   {
 
 
-
-    private long attackTime = System.currentTimeMillis();
-
-
     /** 当前攻击目标 */
     Character targetCharacter;
 
+    private long attackTime = System.currentTimeMillis();
 
     public String displayData() {
         return MessageFormat.format("id:{0}  name:{1}  hp:{2}  mp:{3}  {4}"

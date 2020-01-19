@@ -6,8 +6,10 @@ import com.example.demoserver.common.commons.Character;
 import com.example.demoserver.game.bag.service.BagService;
 import com.example.demoserver.game.equip.service.EquipmentBarService;
 import com.example.demoserver.game.friend.service.FriendService;
+import com.example.demoserver.game.player.dao.UserEntityMapper;
 import com.example.demoserver.game.player.manager.PlayerCacheMgr;
 import com.example.demoserver.game.player.model.Player;
+import com.example.demoserver.game.player.model.UserEntity;
 import com.example.demoserver.game.roleproperty.service.RolePropertyService;
 import com.example.demoserver.game.scene.servcie.GameSceneService;
 import com.example.demoserver.game.task.service.TaskService;
@@ -17,6 +19,7 @@ import com.example.demoserver.timejob.TimeTaskThreadManager;
 import com.sun.xml.internal.bind.v2.TODO;
 import io.netty.channel.ChannelHandlerContext;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -53,6 +56,9 @@ public class PlayerDataService {
     @Autowired
     private TaskService taskService;
 
+    @Autowired
+    private UserEntityMapper userEntityMapper;
+
     /**
      *  通过上下文查找玩家
      * @param ctx   上下文
@@ -73,21 +79,19 @@ public class PlayerDataService {
     public Player getPlayerById(Integer playerId) {
 
         ChannelHandlerContext ctx = playerCacheMgr.getCxtByPlayerId(playerId);
-        if(Objects.nonNull(ctx)) {
+        if (Objects.nonNull(ctx)) {
             return getPlayerByCtx(ctx);
         } else {
-              // TPlayer tPlayer = findTPlayer(playerId);
-             /*  if (Objects.nonNull(tPlayer)) {
-                   Player player = new Player();
-                   BeanUtils.copyProperties(tPlayer,player);
-                   return player;*/
+            UserEntity userEntity = userEntityMapper.selectUserEntityById(playerId);
+            if (Objects.nonNull(userEntity)) {
+                Player player = new Player();
+                BeanUtils.copyProperties(userEntity, player);
+                return player;
+            }
             return null;
-        }/* else {
-                   return null;
-               }*/
-
         }
 
+    }
     /**
      *  通过玩家id查找在线玩家
      * @param playerId  玩家id

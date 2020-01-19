@@ -22,38 +22,9 @@ public class ScenceEntity {
 
     private Integer roleType;
 
+    private String dropItems;
 
-    public Integer getId() {
-        return id;
-    }
 
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public Long getHp() {
-        return hp;
-    }
-
-    public void setHp(Long hp) {
-        this.hp = hp;
-    }
-
-    public Long getMp() {
-        return mp;
-    }
-
-    public void setMp(Long mp) {
-        this.mp = mp;
-    }
 
     public Long getAttack() {
         return attack;

@@ -1,6 +1,9 @@
 package com.example.demoserver.game.SceneEntity.model;
 
 
+import lombok.Data;
+
+@Data
 public class Drop {
 
 
@@ -8,6 +11,6 @@ public class Drop {
     double probability;
 
     // 掉落物品
-    Integer thingId;
+    Integer itemId;
 
 }

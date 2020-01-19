@@ -90,6 +90,38 @@ public enum  Orders {
 
     LEAVEGUILD("leaveguild",212,"离开工会"),
 
+    SHOWGAMECOPY("showgamecopy",220,"展示各个场景有的副本"),
+
+    ENTERGAMECOPY("entergamecopy",221,"进入副本"),
+
+    ENTERTEAMGAMECOPY("enterteamgamecopy",225,"团队进入副本"),
+
+    EXITGAMECOPY("exitgamecopy",222,"退出副本"),
+
+    SENDMAIL("sendmail",230,"发送邮件"),
+
+    RECEIVEMAIL("receivemail",231,"接受邮件"),
+
+    MAILSLIST("mailslist",232,"查看邮件列表"),
+
+    INVITEPLAYERJOINTEAM("inviteplayerjointeam",240,"邀请玩家加入队伍"),
+
+    JOINTEAM("jointeam",241,"申请加入队伍"),
+
+    EXITTEAM("exitteam",242,"离开队伍"),
+
+    AGREEPLAYERJOINTEAM("agreeplayerjointeam",243,"同意玩家加入队伍"),
+
+    REFUSEPLAYERJOINTEAM("refuseplayerjointeam",245,"不同意玩家加入队伍"),
+
+    REFUSEJOINTEAM("refusejoinplayer",247,"拒绝加入玩家队伍"),
+
+    GETOUTPLAYERTEAM("getoutplayer",246,"将玩家踢出队伍,队长有资格"),
+
+    SHOWTEAM("showteam",248,"展示队伍信息"),
+
+
+
     /**
      * 玩家注册登录
      * */

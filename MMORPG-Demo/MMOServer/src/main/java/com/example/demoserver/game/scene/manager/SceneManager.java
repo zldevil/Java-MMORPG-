@@ -1,9 +1,10 @@
 package com.example.demoserver.game.scene.manager;
 
 
-import com.example.demoserver.game.SceneEntity.manager.GameObjectManager;
+import com.example.demoserver.game.SceneEntity.manager.GameObjectCache;
 import com.example.demoserver.game.SceneEntity.model.Monster;
 import com.example.demoserver.game.SceneEntity.model.ScenceEntity;
+import com.example.demoserver.game.SceneEntity.service.MonsterService;
 import com.example.demoserver.game.scene.model.GameScene;
 import com.google.common.util.concurrent.ThreadFactoryBuilder;
 
@@ -39,9 +40,10 @@ public class SceneManager {
 
 
     @Autowired
-    private GameObjectManager gameObjectManager;
+    private GameObjectCache gameObjectManager;
 
-
+    @Autowired
+    private MonsterService monsterService;
 
 
 
@@ -56,7 +58,7 @@ public class SceneManager {
 
 
     private void refreshScene() {
-        List<GameScene>  gameSceneList= SceneCacheMgr.list();
+        List<GameScene>  gameSceneList= SceneCache.list();
         for (GameScene gameScene : gameSceneList) {
 
             // 刷新怪物
@@ -89,7 +91,7 @@ public class SceneManager {
     private void monsterAttack(Monster monster, GameScene gameScene) {
 
         if (Objects.nonNull(monster.getTarget())) {
-           // monsterService.startAI(monster,gameScene);
+            monsterService.startAIAttackInScene(monster,gameScene);
         }
     }
 

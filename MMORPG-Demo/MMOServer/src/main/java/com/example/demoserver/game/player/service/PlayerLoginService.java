@@ -121,6 +121,7 @@ public class PlayerLoginService {
         //设置初始时的场景ID
         player.setSenceId(1);
         player.setMoney(100);
+        player.setExp(100);
 
         /**  创建角色时初始化任务 **/
         //taskService.getNewPlayerTask((Player) player);

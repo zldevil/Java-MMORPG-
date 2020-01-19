@@ -54,6 +54,9 @@ public class Player extends UserEntity implements Character {
 
     private Integer level;
 
+    //玩家所在的队伍的id
+    private Integer teamId=-1;
+
     /**
      * 玩家现在拥有的buff
      */

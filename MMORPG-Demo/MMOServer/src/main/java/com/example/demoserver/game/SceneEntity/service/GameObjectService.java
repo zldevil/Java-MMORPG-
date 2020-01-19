@@ -1,7 +1,7 @@
 package com.example.demoserver.game.SceneEntity.service;
 
 
-import com.example.demoserver.game.SceneEntity.manager.GameObjectManager;
+import com.example.demoserver.game.SceneEntity.manager.GameObjectCache;
 import com.example.demoserver.game.SceneEntity.model.Monster;
 import com.example.demoserver.game.SceneEntity.model.NPC;
 import com.example.demoserver.game.SceneEntity.model.ScenceEntity;
@@ -22,7 +22,7 @@ public class GameObjectService {
 
 
     @Resource
-    private GameObjectManager gameObjectManager;
+    private GameObjectCache gameObjectManager;
 
 
     @Resource

@@ -241,7 +241,7 @@ public class TaskService {
      * 新玩家初始化任务
      * @param initedPlayer
      */
-    //写在创建玩家的时候？
+
     public void getNewPlayerTask(Player initedPlayer) {
 
         addAcceptTask(initedPlayer, 1);

@@ -18,20 +18,21 @@ public class Item {
     //在背包中的位置索引，默认为0
     private Integer locationIndex = 0;
 
-    /**武器耐久度 默认是-1*/
-    private Long durable = -1L;
+
+   /* private Long durable = -1L;
 
     public void setDurable(Long durable) {
         if(durable <= 0) {
             durable = 0L;
         }
         this.durable = durable;
-    }
+    }*/
 
 
     private Integer level;
 
     public Item() {}
+
 
     //装备
     public Item(Long id, Integer count, ItemInfo itemInfo, Integer level) {
@@ -39,7 +40,7 @@ public class Item {
         this.count = count;
         this.itemInfo = itemInfo;
         //设置磨损度
-        this.durable = itemInfo.getDurable();
+        //this.durable = itemInfo.getDurable();
         this.level = level;
     }
 
